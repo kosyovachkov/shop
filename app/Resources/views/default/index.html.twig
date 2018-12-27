@@ -1,21 +1,33 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-<table border="1px">
-    <tr>
-        <th>Name</th>
-        <th>Brand</th>
-        <th>Price</th>
-        <th>Category</th>
-    </tr>
-    {% for product in products %}
-        <tr>
-            <td>{{ product.name }}</td>
-            <td>{{ product.brand }}</td>
-            <td>{{ product.price }}</td>
-            <td>{{ product.category.name }}</td>
-        </tr>
+    <div class="container body-content">
+        <div class="row">
+            {% for product in products %}
+                <div class="col-md-6">
+                    <article>
+                        <header>
+                            <h2>{{ product.name}}</h2>
+                        </header>
 
-    {% endfor %}
-</table>
+                        <p>
+                            {{ product.price }}
+                        </p>
+
+                        <small class="author">
+                            {{ product.category.name }}
+                        </small>
+
+                        <footer>
+                            <div class="pull-right">
+                                <a class="btn btn-default btn-xs"
+                                   href={{ path('product_view', {"id":product.id}) }}>Read more &raquo;</a>
+                            </div>
+                        </footer>
+                    </article>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+
 {% endblock %}

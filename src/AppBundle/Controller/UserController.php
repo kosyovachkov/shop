@@ -29,7 +29,7 @@ class UserController extends Controller
             $password = $this->get("security.password_encoder")->encodePassword($user, $user->getPassword());
             $user->setPassword($password);
             $role = $this->getDoctrine()->getRepository(Role::class)->find(1);
-            $user->setRoles($role);
+            $user->addRole($role);
 
             $em = $this->getDoctrine()->getManager();
             $em->persist($user);

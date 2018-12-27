@@ -223,20 +223,55 @@ class User implements UserInterface
     }
 
     /**
-     * @return ArrayCollection
+     * Returns the roles granted to the user.
+     *
+     * <code>
+     * public function getRoles()
+     * {
+     *     return array('ROLE_USER');
+     * }
+     * </code>
+     *
+     * Alternatively, the roles might be stored on a ``roles`` property,
+     * and populated in any number of different ways when the user object
+     * is created.
+     *
+     * @return (Role|string)[] The user roles
      */
     public function getRoles()
     {
-        return $this->roles;
+        $stringRoles = [];
+        foreach ($this->roles as $role) {
+            /**
+             * @var $role Role
+             */
+            $stringRoles[] = is_string($role) ? $role : $role->getRole();
+        }
+        return $stringRoles;
     }
 
     /**
-     * @param Role
+     * @param array $roles
+     * @return $this
      */
-    public function setRoles(Role $role)
+    public function setRoles($roles)
+    {
+        $this->roles = $roles;
+        return $this;
+    }
+
+
+    /**
+     * @param \AppBundle\Entity\Role $role
+     *
+     * @return User
+     */
+    public function addRole(Role $role)
     {
         $this->roles[] = $role;
+        return $this;
     }
+
 
 
     /**
@@ -258,7 +293,7 @@ class User implements UserInterface
      */
     public function getUsername()
     {
-        return $this->getUsername();
+        return $this->email;
     }
 
     /**
