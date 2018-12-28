@@ -7,6 +7,9 @@ use AppBundle\Form\ProductType;
 use AppBundle\Form\UserType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\HttpFoundation\File\Exception\FileException;
+use Symfony\Component\HttpFoundation\File\File;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -27,7 +30,19 @@ class ProductController extends Controller
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            /**
+             * @var UploadedFile $file
+             */
+            $file = $product->getImage();
+            $fileName = md5(uniqid()) . "." . $file->guessExtension();
 
+            try {
+                $file->move($this->getParameter("product_directory"), $fileName);
+            } catch (FileException $ex) {
+
+            }
+
+            $product->setImage($fileName);
             $em = $this->getDoctrine()->getManager();
             $em->persist($product);
             $em->flush();
@@ -51,8 +66,21 @@ class ProductController extends Controller
         $form = $this->createForm(ProductType::class, $product);
         $form->handleRequest($request);
 
-        if ($form->isSubmitted()&&$form->isValid()) {
+        if ($form->isSubmitted() && $form->isValid()) {
 
+            /**
+             * @var UploadedFile $file
+             */
+            $file = $product->getImage();
+            $fileName = md5(uniqid()) . "." . $file->guessExtension();
+
+            try {
+                $file->move($this->getParameter("product_directory"), $fileName);
+            } catch (FileException $ex) {
+
+            }
+
+            $product->setImage($fileName);
             $em = $this->getDoctrine()->getManager();
             $em->persist($product);
             $em->flush();
@@ -60,7 +88,7 @@ class ProductController extends Controller
             return $this->redirectToRoute("homepage");
         }
 
-        return $this->render("product/edit.html.twig", ["productForm" => $form->createView(), "product"=>$product]);
+        return $this->render("product/edit.html.twig", ["productForm" => $form->createView(), "product" => $product]);
     }
 
     /**
@@ -68,10 +96,11 @@ class ProductController extends Controller
      * @param $id
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function viewProduct($id){
+    public function viewProduct($id)
+    {
 
         $product = $this->getDoctrine()->getRepository(Product::class)->find($id);
 
-        return $this->render('product/product.html.twig',["product"=>$product]);
+        return $this->render('product/product.html.twig', ["product" => $product]);
     }
 }

@@ -59,7 +59,7 @@ class Product
     /**
      * @var string
      *
-     * @ORM\Column(name="image", type="text")
+     * @ORM\Column(name="image", type="string", nullable=false)
      */
     private $image;
 

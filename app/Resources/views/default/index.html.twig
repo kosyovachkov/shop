@@ -14,6 +14,11 @@
                             {{ product.price }}
                         </p>
 
+                        <p>
+                            <a href="{{ path('product_view', {"id": product.id}) }}">
+                                <img src="{{ asset('uploads/images/'~product.image) }}"></a>
+                        </p>
+
                         <small class="author">
                             {{ product.category.name }}
                         </small>

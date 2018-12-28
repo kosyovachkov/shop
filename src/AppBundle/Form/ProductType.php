@@ -9,6 +9,7 @@ use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\MoneyType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
@@ -29,12 +30,21 @@ class ProductType extends AbstractType
             ->add('brand', TextType::class)
             ->add('length', IntegerType::class)
             ->add('size', TextType::class)
-            ->add('image', TextType::class)
+            ->add('image', FileType::class, [
+                'data_class' => null,
+                "required"=>false
+            ])
             ->add('description', TextType::class)
             ->add('quantity', IntegerType::class)
-            ->add('price', MoneyType::class)
-            ->add('promoPrice', MoneyType::class)
-            ->add('featured', CheckboxType::class)
+            ->add('price', MoneyType::class, [
+                "currency"=>false
+            ])
+            ->add('promoPrice', MoneyType::class, [
+                "currency"=>false
+            ])
+            ->add('featured', CheckboxType::class, [
+                "required"=>false
+            ])
             ->add('category', EntityType::class, [
                 "class"=>"AppBundle\Entity\Category",
                 "choice_label"=>"name"
