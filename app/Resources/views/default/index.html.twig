@@ -15,8 +15,8 @@
                         </p>
 
                         <p>
-                            <a href="{{ path('product_view', {"id": product.id}) }}">
-                                <img src="{{ asset('uploads/images/'~product.image) }}"></a>
+                            <a href="{{ path('view_product', {"id": product.id}) }}">
+                                <img src="{{ asset('uploads/images/'~product.image) }}" width='300px'></a>
                         </p>
 
                         <small class="author">
@@ -26,7 +26,7 @@
                         <footer>
                             <div class="pull-right">
                                 <a class="btn btn-default btn-xs"
-                                   href={{ path('product_view', {"id":product.id}) }}>Read more &raquo;</a>
+                                   href={{ path('view_product', {"id":product.id}) }}>Read more &raquo;</a>
                             </div>
                         </footer>
                     </article>

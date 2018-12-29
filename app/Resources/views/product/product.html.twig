@@ -12,7 +12,7 @@
             </p>
 
             <p>
-                <a href="{{ path('product_view', {"id": product.id}) }}">
+                <a href="{{ path('view_product', {"id": product.id}) }}">
                     <img src="{{ asset('uploads/images/'~product.image) }}"></a>
             </p>
 
@@ -24,6 +24,10 @@
                 <div class="pull-right">
                     <a class="btn btn-default btn-xs"
                        href={{ path('edit_product', {"id":product.id}) }}>Edit &raquo;</a>
+                </div>
+                <div class="pull-right">
+                    <a class="btn btn-danger btn-xs"
+                       href={{ path('delete_product', {"id":product.id}) }}>Delete &raquo;</a>
                 </div>
             </footer>
         </article>

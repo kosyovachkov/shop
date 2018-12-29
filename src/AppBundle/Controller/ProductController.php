@@ -63,24 +63,30 @@ class ProductController extends Controller
     {
         $product = $this->getDoctrine()->getRepository(Product::class)->find($id);
 
+        $image = $product->getImage();
+
         $form = $this->createForm(ProductType::class, $product);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-
             /**
              * @var UploadedFile $file
              */
             $file = $product->getImage();
-            $fileName = md5(uniqid()) . "." . $file->guessExtension();
 
-            try {
-                $file->move($this->getParameter("product_directory"), $fileName);
-            } catch (FileException $ex) {
+            if ($file == null) {
+                $product->setImage($image);
+            } else {
+                $fileName = md5(uniqid()) . "." . $file->guessExtension();
 
+                try {
+                    $file->move($this->getParameter("product_directory"), $fileName);
+                } catch (FileException $ex) {
+
+                }
+                $product->setImage($fileName);
             }
 
-            $product->setImage($fileName);
             $em = $this->getDoctrine()->getManager();
             $em->persist($product);
             $em->flush();
@@ -92,7 +98,7 @@ class ProductController extends Controller
     }
 
     /**
-     * @Route("/product/{id}", name="product_view")
+     * @Route("/product/{id}", name="view_product")
      * @param $id
      * @return \Symfony\Component\HttpFoundation\Response
      */
@@ -102,5 +108,20 @@ class ProductController extends Controller
         $product = $this->getDoctrine()->getRepository(Product::class)->find($id);
 
         return $this->render('product/product.html.twig', ["product" => $product]);
+    }
+
+    /**
+     * @Route("/product/delete/{id}", name="delete_product")
+     * @param $id
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    public function deleteProduct($id)
+    {
+        $em = $this->getDoctrine()->getManager();
+        $product = $em->getRepository(Product::class)->find($id);
+        $em->remove($product);
+        $em->flush();
+
+        return $this->redirectToRoute("homepage");
     }
 }
