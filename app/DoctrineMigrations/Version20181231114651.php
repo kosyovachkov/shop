@@ -8,7 +8,7 @@ use Doctrine\DBAL\Schema\Schema;
 /**
  * Auto-generated Migration: Please modify to your needs!
  */
-class Version20181227172954 extends AbstractMigration
+class Version20181231114651 extends AbstractMigration
 {
     /**
      * @param Schema $schema
@@ -18,7 +18,7 @@ class Version20181227172954 extends AbstractMigration
         // this up() migration is auto-generated, please modify it to your needs
         $this->abortIf($this->connection->getDatabasePlatform()->getName() !== 'mysql', 'Migration can only be executed safely on \'mysql\'.');
 
-        $this->addSql('ALTER TABLE product CHANGE image image VARCHAR(255) NOT NULL');
+        $this->addSql('ALTER TABLE ordered_products ADD product_id INT NOT NULL');
     }
 
     /**
@@ -29,6 +29,6 @@ class Version20181227172954 extends AbstractMigration
         // this down() migration is auto-generated, please modify it to your needs
         $this->abortIf($this->connection->getDatabasePlatform()->getName() !== 'mysql', 'Migration can only be executed safely on \'mysql\'.');
 
-        $this->addSql('ALTER TABLE product CHANGE image image LONGTEXT NOT NULL COLLATE utf8_unicode_ci');
+        $this->addSql('ALTER TABLE ordered_products DROP product_id');
     }
 }

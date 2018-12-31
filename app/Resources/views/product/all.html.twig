@@ -1,0 +1,28 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <div class="row">
+        {% for product in products %}
+            <div class="col-md-4">
+                <div class="card mb-4 shadow-sm">
+                    <a href="{{ path('view_product', {"id":product.id}) }}">
+                        <img class="card-img-top" src="{{ asset('uploads/images/' ~ product.image) }}" width="229" height="260"
+                             alt="Card image cap">
+                    </a>
+                    <div class="card-body">
+                        <h5 class="card-title">{{ product.name }} <span class="badge badge-success">Ново!</span></h5>
+                        <h5 class="card-title" style="color: red; font-weight: bold">{{ product.price }} лв.</h5>
+                        <p class="card-text">{{ product.introText }}...<br>>> <a href="{{ path('view_product', {"id":product.id}) }}">Виж цялото описание</a> <<</p>
+                    </div>
+                    <div class="card-footer">
+                        <div class="btn-group">
+                            <button type="button" class="btn btn-md btn-outline-info">Разгледай</button>
+                            <button type="button" class="btn btn-md btn-outline-danger">Добави в количката</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+{% endblock %}
+

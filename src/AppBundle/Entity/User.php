@@ -84,6 +84,13 @@ class User implements UserInterface
     private $roles;
 
     /**
+     * @var Cart
+     * @ORM\OneToOne(targetEntity="AppBundle\Entity\Cart", inversedBy="user")
+     * @ORM\JoinColumn(name="cart_id", referencedColumnName="id")
+     */
+    private $cart;
+
+    /**
      * User constructor.
      */
     public function __construct()
@@ -223,6 +230,24 @@ class User implements UserInterface
     }
 
     /**
+     * @return Cart
+     */
+    public function getCart()
+    {
+        return $this->cart;
+    }
+
+    /**
+     * @param Cart $cart
+     */
+    public function setCart(Cart $cart)
+    {
+        $this->cart = $cart;
+    }
+
+
+
+    /**
      * Returns the roles granted to the user.
      *
      * <code>
@@ -305,6 +330,10 @@ class User implements UserInterface
     public function eraseCredentials()
     {
         // TODO: Implement eraseCredentials() method.
+    }
+
+    public function isAdmin(){
+        return in_array("ROLE_ADMIN", $this->getRoles());
     }
 }
 

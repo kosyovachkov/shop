@@ -10,7 +10,26 @@ namespace AppBundle\Repository;
  */
 class ProductRepository extends \Doctrine\ORM\EntityRepository
 {
-    public function getLastThreeProducts(){
+    public function getAllProducts()
+    {
+        return $this->createQueryBuilder("p")
+            ->where("p.quantity > :minQuantity")
+            ->orderBy("p.id", "DESC")
+            ->setParameter("minQuantity", 0)
+            ->getQuery()
+            ->getResult();
+
+    }
+
+    public function getLastThreeProducts()
+    {
+        return $this->createQueryBuilder("p")
+            ->where("p.quantity > :minQuantity")
+            ->orderBy("p.id", "DESC")
+            ->setMaxResults(3)
+            ->setParameter("minQuantity", 0)
+            ->getQuery()
+            ->getResult();
 
     }
 }

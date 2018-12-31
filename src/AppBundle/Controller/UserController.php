@@ -2,6 +2,7 @@
 
 namespace AppBundle\Controller;
 
+use AppBundle\Entity\Cart;
 use AppBundle\Entity\Role;
 use AppBundle\Entity\User;
 use AppBundle\Form\UserType;
@@ -28,17 +29,40 @@ class UserController extends Controller
 
             $password = $this->get("security.password_encoder")->encodePassword($user, $user->getPassword());
             $user->setPassword($password);
+
             $role = $this->getDoctrine()->getRepository(Role::class)->find(1);
             $user->addRole($role);
 
+            $userCart = new Cart();
+            $user->setCart($userCart);
+            $userCart->setUser($user);
+
             $em = $this->getDoctrine()->getManager();
             $em->persist($user);
+            $em->persist($userCart);
             $em->flush();
 
             return $this->redirect("/login");
         }
 
-        return $this->render('security/register.html.twig');
+        return $this->render('security/register.html.twig', ["registerForm"=>$form->createView()]);
+    }
+
+    /**
+     * @param Request $request
+     * @Route("/user/profile", name="user_profile")
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    public function viewProfileAction(Request $request)
+    {
+        /**
+         * @var User $loggedInUser
+         */
+        $loggedInUser = $this->getUser();
+
+        $user = $this->getDoctrine()->getRepository(User::class)->findOneBy(["email" => $loggedInUser->getEmail()]);
+
+        return $this->render("user/profile.html.twig", ["user" => $user]);
     }
 
 

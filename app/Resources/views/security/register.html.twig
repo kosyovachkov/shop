@@ -1,7 +1,13 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-    <form name="register" method="post">
+
+    {{ form_start(registerForm) }}
+
+    {{ form_end(registerForm) }}
+
+
+   {# <form name="register" method="post">
         Email:<input type="text" name="user[email]"></br>
         First Name:<input type="text" name="user[firstName]"></br>
         Last Name:<input type="text" name="user[lastName]"></br>
@@ -11,7 +17,7 @@
 
         <input type="hidden" name="_csrf_token" value="{{ csrf_token("register") }}">
         <input type="submit" value="Register">
-    </form>
+    </form>#}
 
 {% endblock %}
 

@@ -2,12 +2,14 @@
 
 namespace AppBundle\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * Product
  *
- * @ORM\Table(name="product")
+ * @ORM\Table(name="products")
  * @ORM\Entity(repositoryClass="AppBundle\Repository\ProductRepository")
  */
 class Product
@@ -78,8 +80,9 @@ class Product
     private $quantity;
 
     /**
-     * @var string
-     *
+     * @var double
+     * @Assert\GreaterThan(value = 0)
+     * @Assert\LessThan(value="1000")
      * @ORM\Column(name="price", type="decimal", precision=10, scale=2)
      */
     private $price;
@@ -104,6 +107,21 @@ class Product
      * @ORM\JoinColumn(name="category_id", referencedColumnName="id")
      */
     private $category;
+
+    /**
+     * @var ArrayCollection
+     * @ORM\ManyToMany(targetEntity="AppBundle\Entity\Cart", mappedBy="products")
+     */
+    private $carts;
+
+
+    /**
+     * Product constructor.
+     */
+    public function __construct()
+    {
+        $this->carts = new ArrayCollection();
+    }
 
 
     /**
@@ -204,7 +222,6 @@ class Product
 
     /**
      * Get length
-     *
      * @return int
      */
     public function getLength()
@@ -396,5 +413,33 @@ class Product
         $this->category = $category;
     }
 
-}
+    /**
+     * @return ArrayCollection
+     */
+    public function getCarts()
+    {
+        return $this->carts;
+    }
 
+    /**
+     * @param ArrayCollection $carts
+     */
+    public function setCarts(ArrayCollection $carts)
+    {
+        $this->carts = $carts;
+    }
+
+    public function addCart(Cart $cart)
+    {
+        $this->carts[] = $cart;
+    }
+
+
+    public function getIntroText()
+    {
+        $ful = $this->getDescription();
+        $intro = substr($ful, 0, 300);
+        return $intro;
+    }
+
+}

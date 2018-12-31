@@ -1,84 +1,112 @@
 {% extends 'base.html.twig' %}
 
+
+
 {% block body %}
     <div class="container body-content span=8 offset=2">
         <div class="well">
-            <h2 class="page-title">Edit Product here!</h2>
+            <h2 class="page-title">Редактирай продукт</h2>
             <br/>
             {{ form_start(productForm) }}
-            <div class="form-group">
-                <div class="col-sm-2">
+
+            <div class="form-group row">
+                <div class="col-sm-2 col-form-label">
                     {{ form_label(productForm.name) }}
                 </div>
-                {{ form_widget(productForm.name) }}
+                <div class="col-sm-4">
+                    {{ form_widget(productForm.name) }}
+                </div>
             </div>
-            <div class="form-group">
+            <div class="form-group row">
                 <div class="col-sm-2">
                     {{ form_label(productForm.description) }}
                 </div>
+                <div class="col-sm-4">
                 {{ form_widget(productForm.description) }}
+                </div>
             </div>
-            <div class="form-group">
+            <div class="form-group row">
                 <div class="col-sm-2">
                     {{ form_label(productForm.price) }}
                 </div>
+                <div class="col-sm-4">
                 {{ form_widget(productForm.price) }}
+                </div>
             </div>
-            <div class="form-group">
+            {{ form_errors(productForm.price) }}
+            <div class="form-group row">
                 <div class="col-sm-2">
                     {{ form_label(productForm.brand) }}
                 </div>
+                <div class="col-sm-4">
                 {{ form_widget(productForm.brand) }}
+                </div>
             </div>
-            <div class="form-group">
+            <div class="form-group row">
                 <div class="col-sm-2">
                     {{ form_label(productForm.length) }}
                 </div>
+                <div class="col-sm-4">
                 {{ form_widget(productForm.length) }}
+                </div>
             </div>
-            <div class="form-group">
+            <div class="form-group row">
                 <div class="col-sm-2">
                     {{ form_label(productForm.model) }}
                 </div>
+                <div class="col-sm-4">
                 {{ form_widget(productForm.model) }}
+                </div>
             </div>
-            <div class="form-group">
+            <div class="form-group row">
                 <div class="col-sm-2">
                     {{ form_label(productForm.quantity) }}
                 </div>
+                <div class="col-sm-4">
                 {{ form_widget(productForm.quantity) }}
+                </div>
             </div>
-            <div class="form-group">
+            <div class="form-group row">
                 <div class="col-sm-2">
                     {{ form_label(productForm.size) }}
                 </div>
+                <div class="col-sm-4">
                 {{ form_widget(productForm.size) }}
+                </div>
             </div>
-            <div class="form-group">
+            <div class="form-group row">
                 <div class="col-sm-2">
                     {{ form_label(productForm.promoPrice) }}
                 </div>
+                <div class="col-sm-4">
                 {{ form_widget(productForm.promoPrice) }}
+                </div>
             </div>
-            <div class="form-group">
+            <div class="form-group row">
                 <div class="col-sm-2">
                     {{ form_label(productForm.category) }}
                 </div>
+                <div class="col-sm-4">
                 {{ form_widget(productForm.category) }}
+                </div>
             </div>
-            <div class="form-group">
+            <div class="form-group row">
                 <div class="col-sm-2">
                     {{ form_label(productForm.featured) }}
                 </div>
+                <div class="col-sm-1">
                 {{ form_widget(productForm.featured) }}
+                </div>
             </div>
-            <div class="form-group">
+            <div class="form-group row">
                 <div class="col-sm-2">
                     {{ form_label(productForm.image) }}
                 </div>
+                <div class="col-sm-4">
                 {{ form_widget(productForm.image) }}
+                </div>
             </div>
-            <div class="form-group">
+            <div class="form-group row">
                 {{ form_widget(productForm.submit) }}
             </div>
 
@@ -107,4 +135,19 @@
         </div>
     </div>
 {% endblock %}
+
+{% form_theme productForm _self %}
+
+{# form_errors.html.twig #}
+{% block form_errors %}
+    {% spaceless %}
+        {% if errors|length > 0 %}
+            {% for error in errors %}
+                <div class="offset-sm-2">
+                <div class="alert alert-danger" style="width: 500px;font-weight: bold" role="alert">
+                    {{ error.message }}</div></div>
+            {% endfor %}
+        {% endif %}
+    {% endspaceless %}
+{% endblock form_errors %}
 

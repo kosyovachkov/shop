@@ -1,0 +1,17 @@
+{% extends "base.html.twig" %}
+
+{% block body %}
+
+    <form name="profile" method="post">
+        Email:<input type="text" name="user[email]" value="{{ user.email }}"></br>
+        First Name:<input type="text" name="user[firstName]" value="{{ user.firstName }}"></br>
+        Last Name:<input type="text" name="user[lastName]" value="{{ user.lastName }}"></br>
+        Password:<input type="text" name="user[password]"></br>
+        Repeat Password:<input type="text" name="repeatPassword"></br>
+        Address:<input type="text" name="user[address]" value="{{ user.address }}"></br></br>
+
+        <input type="hidden" name="_csrf_token" value="{{ csrf_token("profile") }}">
+        <input type="submit" value="Промени">
+        <input type="reset" value="Обратно">
+    </form>
+{% endblock %}
