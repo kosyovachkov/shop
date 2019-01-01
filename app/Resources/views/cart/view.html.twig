@@ -27,10 +27,12 @@
         <tr>
             <td colspan="5" align="right" style="font-weight: bold">Обща сума: {{ total }}</td>
         </tr>
-        {% if products.count>0 %}
-        <tr>
-            <td colspan="5" align="right"><a href="{{ path('order_products') }}"><button class="btn btn-success">Поръчай...</button></a></td>
-        </tr>
+        {% if products %}
+            <tr>
+                <td colspan="5" align="right"><a href="{{ path('order_products') }}">
+                        <button class="btn btn-success">Поръчай...</button>
+                    </a></td>
+            </tr>
         {% endif %}
         </tbody>
     </table>

@@ -32,7 +32,7 @@ class Cart
     private $user;
 
     /**
-     * @var ArrayCollection
+     * @var ArrayCollection|OrderedProduct[]
      * @ORM\OneToMany(targetEntity="AppBundle\Entity\OrderedProduct", mappedBy="cart")
      */
     private $orderedProducts;
@@ -93,7 +93,7 @@ class Cart
         $productsInCart = $this->getOrderedProducts();
 
         foreach ($productsInCart as $item) {
-            if ($item->getProductId() === $id) {
+            if ($item->getProductId() === $id && !$item->getUserOrder()) {
                 return $item;
             }
         }
@@ -106,9 +106,11 @@ class Cart
         $productsInCart = $this->getOrderedProducts();
 
         foreach ($productsInCart as $item) {
-            $q = $item->getQuantity();
-            $p = $item->getPrice();
-            $total += ($q * $p);
+            if(!$item->getUserOrder()){
+                $q = $item->getQuantity();
+                $p = $item->getPrice();
+                $total += ($q * $p);
+            }
         }
 
         return $total;

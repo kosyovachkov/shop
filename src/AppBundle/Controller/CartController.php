@@ -6,6 +6,7 @@ use AppBundle\Entity\Cart;
 use AppBundle\Entity\OrderedProduct;
 use AppBundle\Entity\Product;
 use AppBundle\Entity\User;
+use AppBundle\Entity\UserOrder;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
@@ -78,7 +79,13 @@ class CartController extends Controller
          * @var User $user
          */
         $user = $this->getUser();
-        $products = $user->getCart()->getOrderedProducts();
+        $products = [];
+           foreach($user->getCart()->getOrderedProducts() as $product){
+               if(!$product->getUserOrder()){
+                   $products[]=$product;
+               }
+           };
+
         $total = $user->getCart()->getTotal();
 
         return $this->render("cart/view.html.twig", ["products" => $products, "total" => $total]);
@@ -88,7 +95,7 @@ class CartController extends Controller
      * @return \Symfony\Component\HttpFoundation\RedirectResponse
      * @Route("", name="order_products")
      */
-    public function orderProductsInCart()
+    public function PurchaseProductsInCart()
     {
         /**
          * @var User $user
@@ -99,13 +106,23 @@ class CartController extends Controller
         $userCart = $user->getCart();
         $productsInCart = $userCart->getOrderedProducts();
 
+        $order = new UserOrder();
+        $order->setUser($user);
         foreach ($productsInCart as $product) {
-            $em->remove($product);
+            if(!$product->getUserOrder()){
+                $product->setUserOrder($order);
+                $order->addProduct($product);
+            }
         }
+
+       /* foreach ($productsInCart as $product) {
+            $product->setIsActive(false);
+        }*/
 
         $userCart->dropProducts();
 
         $em->persist($userCart);
+        $em->persist($order);
         $em->flush();
 
         return $this->redirectToRoute("homepage");
@@ -130,9 +147,9 @@ class CartController extends Controller
         $currentProduct = $userCart->getProductById($id);
         $currentProductQuantity = $currentProduct->getQuantity();
 
-        $product = $this->getDoctrine()->getRepository(Product::class)->findOneBy(["id"=>$currentProduct->getProductId()]);
+        $product = $this->getDoctrine()->getRepository(Product::class)->findOneBy(["id" => $currentProduct->getProductId()]);
 
-        $product->setQuantity($product->getQuantity()+$currentProductQuantity);
+        $product->setQuantity($product->getQuantity() + $currentProductQuantity);
 
         $em->persist($product);
         $em->remove($currentProduct);

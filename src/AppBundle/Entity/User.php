@@ -91,11 +91,18 @@ class User implements UserInterface
     private $cart;
 
     /**
+     * @var ArrayCollection
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\UserOrder", mappedBy="user")
+     */
+    private $orders;
+
+    /**
      * User constructor.
      */
     public function __construct()
     {
         $this->roles = new ArrayCollection();
+        $this->orders = new ArrayCollection();
     }
 
 
@@ -245,7 +252,26 @@ class User implements UserInterface
         $this->cart = $cart;
     }
 
+    /**
+     * @return ArrayCollection
+     */
+    public function getOrders()
+    {
+        return $this->orders;
+    }
 
+    /**
+     * @param ArrayCollection $orders
+     */
+    public function setOrders(ArrayCollection $orders)
+    {
+        $this->orders = $orders;
+    }
+
+    public function addOrder(UserOrder $userOrder)
+    {
+        $this->orders[] = $userOrder;
+    }
 
     /**
      * Returns the roles granted to the user.
@@ -298,7 +324,6 @@ class User implements UserInterface
     }
 
 
-
     /**
      * Returns the salt that was originally used to encode the password.
      *
@@ -332,7 +357,8 @@ class User implements UserInterface
         // TODO: Implement eraseCredentials() method.
     }
 
-    public function isAdmin(){
+    public function isAdmin()
+    {
         return in_array("ROLE_ADMIN", $this->getRoles());
     }
 }

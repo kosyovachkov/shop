@@ -37,6 +37,9 @@
                         <a href="{{ path('view_cart') }}" class="navbar-brand">
                             Количка
                         </a>
+                        <a href="{{ path('orders_all') }}" class="navbar-brand">
+                            Моите поръчки
+                        </a>
                         {% if app.user.isAdmin() %}
                             <a href="{{ path('create_product') }}" class="navbar-brand">
                                 Добави продукт

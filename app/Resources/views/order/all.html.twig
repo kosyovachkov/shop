@@ -1,0 +1,30 @@
+{% extends "base.html.twig" %}
+
+{% block body %}
+
+    <table class="table table-dark">
+        <tr>
+            <th>#</th>
+            <th>Дата</th>
+            <th>Брой продукти</th>
+            <th>Сума</th>
+            <th>
+                <div align="right">Операция</div>
+            </th>
+        </tr>
+        <tbody>
+        {% for order in orders %}
+            <tr>
+                <th scope="row">{{ loop.index }}</th>
+                <td>{{ order.formatedDate }}</td>
+                <td>{{ order.numberOfProducts }}</td>
+                <td>{{ order.total }}</td>
+                <td align="right"><a href="#">
+                        <button class="btn btn-sm btn-success">Детайли</button>
+                    </a></td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+{% endblock %}

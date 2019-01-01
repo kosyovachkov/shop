@@ -3,6 +3,7 @@
 namespace AppBundle\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\DBAL\Types\BooleanType;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -55,6 +56,13 @@ class OrderedProduct
      * @ORM\Column(name="product_id", type="integer")
      */
     private $productId;
+
+    /**
+     * @var UserOrder
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\UserOrder", inversedBy="orderedProducts")
+     * @ORM\JoinColumn(name="userOrder_id", referencedColumnName="id")
+     */
+    private $userOrder;
 
 
     /**
@@ -176,6 +184,19 @@ class OrderedProduct
         $this->productId = $productId;
     }
 
+
+    public function getUserOrder()
+    {
+        return $this->userOrder;
+    }
+
+    /**
+     * @param UserOrder $userOrder
+     */
+    public function setUserOrder(UserOrder $userOrder): void
+    {
+        $this->userOrder = $userOrder;
+    }
 
 }
 
