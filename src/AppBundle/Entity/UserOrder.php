@@ -138,7 +138,6 @@ class UserOrder
                 $q = $item->getQuantity();
                 $p = $item->getPrice();
                 $total += ($q * $p);
-
         }
 
         return $total;

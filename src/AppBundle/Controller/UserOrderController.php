@@ -28,4 +28,19 @@ class UserOrderController extends Controller
 
         return $this->render("order/all.html.twig", ["orders"=>$orders]);
     }
+
+    /**
+     * @param int $id
+     * @return \Symfony\Component\HttpFoundation\Response
+     * @Route("/view/{id}", name="view_order")
+     */
+    public function viewOrder(int $id){
+
+        $order = $this->getDoctrine()->getRepository(UserOrder::class)->find($id);
+
+        $total = $order->getTotal();
+
+        $orderProducts = $order->getOrderedProducts();
+        return $this->render("order/view.html.twig", ["products"=>$orderProducts, "total"=>$total]);
+    }
 }

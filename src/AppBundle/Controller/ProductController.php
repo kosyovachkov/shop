@@ -74,6 +74,7 @@ class ProductController extends Controller
      * @param int $id
      * @return \Symfony\Component\HttpFoundation\Response
      * @Route("/edit/{id}", name="edit_product")
+     * @Security("is_granted('IS_AUTHENTICATED_FULLY')")
      */
     public function editAction(Request $request, int $id)
     {
@@ -127,6 +128,7 @@ class ProductController extends Controller
      * @Route("/delete/{id}", name="delete_product")
      * @param $id
      * @return \Symfony\Component\HttpFoundation\Response
+     * @Security("is_granted('IS_AUTHENTICATED_FULLY')")
      */
     public function deleteProduct($id)
     {

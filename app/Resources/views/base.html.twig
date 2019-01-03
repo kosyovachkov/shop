@@ -13,6 +13,9 @@
         <link rel="stylesheet" href="{{ asset('css/bootstrap.css') }}">
         <link rel="stylesheet" href="{{ asset('css/bootstrap-grid.css') }}">
         <link rel="stylesheet" href="{{ asset('css/bootstrap-datetimepicker.min.css') }}">
+        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
+
+
     {% endblock %}
     <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}"/>
 </head>
@@ -28,63 +31,74 @@
     <header>
         <div class="navbar navbar-dark bg-primary" role="navigation">
             <div class="container">
+
                 <div class="navbar-header">
-                    {% if app.user %}
-                        <div class="navbar-brand">Здравей, <a href="{{ path('user_profile') }}">{{ app.user.firstName }}</a>!</div>
-                        <a href="{{ path('homepage') }}" class="navbar-brand">
-                            Начало
-                        </a>
-                        <a href="{{ path('view_cart') }}" class="navbar-brand">
-                            Количка
-                        </a>
-                        <a href="{{ path('orders_all') }}" class="navbar-brand">
-                            Моите поръчки
-                        </a>
-                        {% if app.user.isAdmin() %}
-                            <a href="{{ path('create_product') }}" class="navbar-brand">
-                                Добави продукт
+                    <a href="{{ path('homepage') }}" class="navbar-brand">
+                        Начало
+                    </a>
+                    <span class="dropdown">
+                            <a class="navbar-brand dropdown-toggle" href="#" id="dropdownMenuLink"
+                               data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                Категории
                             </a>
-                            <a href="{{ path('all_products') }}" class="navbar-brand">
-                                Виж всички продукти
-                            </a>
-                        {% endif %}
-                    {% else %}
-                        <a href="{{ path('homepage') }}" class="navbar-brand">LE GRAND BLUE</a>
-                    {% endif %}
-                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+
+                            <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                                <a class="dropdown-item" href="#">Всички</a>
+                                <a class="dropdown-item" href="#">-- Ластични харпуни</a>
+                                <a class="dropdown-item" href="#">-- Пневматични харпуни</a>
+                            </div>
+                        </span>
+                    {#<button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
                         <span class="icon-bar">rrr</span>
                         <span class="icon-bar">ppp</span>
                         <span class="icon-bar">vvv</span>
-                    </button>
+                    </button>#}
                 </div>
-                <div class="navbar-collapse collapse">
-                    <ul class="nav navbar-nav navbar-right">
-                        {% if app.user %}
-                            {#<li>
-                                <a href="{{ path('user_profile') }}">
-                                    My Profile
-                                </a>
-                            </li>#}
-                            <li>
-                                <a href="{{ path('logout') }}">
-                                    Logout
-                                </a>
-                            </li>
-                        {% else %}
-                            <li>
-                                <a href="{{ path('register') }}">
-                                    REGISTER
-                                </a>
-                            </li>
-                            <li>
-                                <a href="{{ path('login') }}">
-                                    LOGIN
-                                </a>
-                            </li>
-                        {% endif %}
-                    </ul>
+
+
+                <div class="navbar-right">
+                    {% if app.user %}
+                        <div class="navbar-brand">Здравей, <a
+                                    href="{{ path('user_profile') }}">{{ app.user.firstName }}</a>!
+                        </div>
+                        <span> <a href="{{ path('view_cart') }}">
+                                    Количка <i class="fas fa-cart-arrow-down"></i>
+                                </a>|</span>
+                        <span>
+                            <span class="dropdown">
+                            <a class="dropdown-toggle" href="#" id="dropdownMenuLink"
+                               data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                Потребителско меню
+                            </a>
+
+                            <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                                <a class="dropdown-item" href="{{ path('orders_all') }}">Моите поръчки</a>
+                                <a class="dropdown-item" href="{{ path('user_profile') }}">Редакция на профил</a>
+                                <a class="dropdown-item" href="{{ path('logout') }}">Изход</a>
+                            </div>
+                       {# </span>
+                            <a href="{{ path('orders_all') }}">
+                                Моите поръчки
+                            </a>|</span>
+                        <span>
+                        <a href="{{ path('user_profile') }}">
+                            Профил
+                        </a>|</span>
+                        <a href="{{ path('logout') }}">
+                            Logout
+                        </a>#}
+                    {% else %}
+                        <span>
+                        <a href="{{ path('register') }}">
+                            РЕГИСТРИРАЙ СЕ
+                        </a>|</span>
+                        <a href="{{ path('login') }}">
+                            ВХОД
+                        </a>
+                    {% endif %}
                 </div>
             </div>
+
         </div>
     </header>
 {% endblock %}

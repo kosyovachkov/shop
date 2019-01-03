@@ -6,6 +6,7 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -19,21 +20,24 @@ class UserType extends AbstractType
     {
         $builder
             ->add('email', TextType::class, [
-                "attr"=>[
-                    "class"=>"form-control"
+                "attr" => [
+                    "class" => "form-control"
                 ]
             ])
             ->add('firstName', TextType::class, [
-                "attr"=>[
-                    "class"=>"form-control"
+                "label" => "Име",
+                "attr" => [
+                    "class" => "form-control",
                 ]
             ])
             ->add('lastName', TextType::class, [
-                "attr"=>[
-                    "class"=>"form-control"
+                "label" => "Фамилия",
+                "attr" => [
+                    "class" => "form-control"
                 ]
             ])
             ->add('password', RepeatedType::class, [
+                "label" => "Парола",
                 'type' => PasswordType::class,
                 'invalid_message' => 'The password fields must match.',
                 'options' => [
@@ -42,21 +46,19 @@ class UserType extends AbstractType
                     ]
                 ],
                 'required' => true,
-                'first_options'  => ['label' => 'Password'],
-                'second_options' => ['label' => 'Repeat Password']
+                'first_options' => ['label' => 'Въведи нова парола'],
+                'second_options' => ['label' => 'Повтори паролата']
             ])
-            ->add('address', TextType::class, [
-                "attr"=>[
-                    "class"=>"form-control"
+            ->add('address', TextareaType::class, [
+                "label" => "Адрес",
+                "attr" => [
+                    "style" => "width:500px; height:150px",
+                    "class" => "form-control"
                 ]
-            ])
-        ->add("submit", SubmitType::class, [
-            "attr"=>[
-                "class"=>"btn btn-primary"
-            ]
-        ]);
+            ]);
+    }
 
-    }/**
+    /**
      * {@inheritdoc}
      */
     public function configureOptions(OptionsResolver $resolver)

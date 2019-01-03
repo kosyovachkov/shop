@@ -19,7 +19,7 @@
                 <td>{{ order.formatedDate }}</td>
                 <td>{{ order.numberOfProducts }}</td>
                 <td>{{ order.total }}</td>
-                <td align="right"><a href="#">
+                <td align="right"><a href="{{ path('view_order', {"id":order.id}) }}">
                         <button class="btn btn-sm btn-success">Детайли</button>
                     </a></td>
             </tr>

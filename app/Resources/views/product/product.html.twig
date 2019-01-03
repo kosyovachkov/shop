@@ -1,36 +1,93 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-    <div class="col-md-6">
-        <article>
-            <header>
-                <h2>{{ product.name}}</h2>
-            </header>
 
-            <p>
-                {{ product.price }}
-            </p>
+    <h3><span class="blockquote-footer"><a
+                    href="{{ path('category', {"id":product.category.id}) }}">{{ product.category.name }}</a></span>
+    </h3>
 
-            <p>
-                <a href="{{ path('view_product', {"id": product.id}) }}">
-                    <img src="{{ asset('uploads/images/'~product.image) }}"></a>
-            </p>
+    <header>
+        <h2>{{ product.name }}</h2>
+    </header>
 
-            <small class="author">
-                {{ product.category.name }}
-            </small>
+    <div class="row">
+        <div class="col-8">
+            <div>
+                <img src="{{ asset('uploads/images/'~product.image) }}" width="600px">
+            </div>
+            <br>
+            <h3> <span class="badge badge-secondary">
+            Цена: {{ product.price }} лв.</span>
+                <span class="small">Налични: {{ product.quantity }} броя.</span>
+            </h3>
+            <div>
+                <p style="font-size: 1.2em">
+                {{ product.description }}
+                </p>
+            </div>
+        </div>
+        <div class="col-4">
+{#
+            <hr style="border: 1px solid darkolivegreen">
+#}
+            <div><span style="margin-right: 10px;"><input type="number" id="form_qty"
+                                                         name="form[qty]" required="required"
+                                                         pattern="[0-9]+" value="1"></span><label for="form_qty"
+                                                                                                  class="required">Избери
+                    количество</label></div>
+            <div>
+                <a href="{{ path('add_to_cart', {"id":product.id}) }}">
+                    <button class="btn btn-success" style="text-transform: uppercase">Добави в количката</button>
+                </a>
+            </div>
+            <hr style="border: 1px solid darkolivegreen">
+        </div>
+    </div>
 
+
+
+    {% if app.user is not null %}
+        {% for role in app.user.roles if role == 'ROLE_ADMIN' %}
             <footer>
                 <div class="pull-right">
-                    <a class="btn btn-default btn-xs"
-                       href={{ path('edit_product', {"id":product.id}) }}>Edit &raquo;</a>
-                </div>
-                <div class="pull-right">
-                    <a class="btn btn-danger btn-xs"
-                       href={{ path('delete_product', {"id":product.id}) }}>Delete &raquo;</a>
+                    <a class="btn btn-success btn-xs"
+                       href={{ path('edit_product', {"id":product.id}) }}>Редактирай</a>
+
+                    <button type="button" class="btn btn-danger btn-xs" data-toggle="modal"
+                            data-target="#exampleModalCenter">
+                        Изтрий
+                    </button>
                 </div>
             </footer>
-        </article>
+        {% endfor %}
+    {% endif %}
     </div>
-{% endblock %}
 
+
+
+
+
+    <!-- Modal -->
+    <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog"
+         aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalCenterTitle">Изтриване</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    Сигурен ли сте, че искате да изтриете продукта?
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-success" data-dismiss="modal">Откажи</button>
+                    <button type="button" class="btn btn-danger btn-xs"><a
+                                href={{ path('delete_product', {"id":product.id}) }}>Изтрий</a></button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
