@@ -2,6 +2,10 @@
 
 namespace AppBundle\Repository;
 
+use AppBundle\Entity\OrderedProduct;
+use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\ORM\Mapping;
+
 /**
  * OrderedProductRepository
  *
@@ -10,4 +14,8 @@ namespace AppBundle\Repository;
  */
 class OrderedProductRepository extends \Doctrine\ORM\EntityRepository
 {
+    public function __construct(EntityManagerInterface $em)
+    {
+        parent::__construct($em, new Mapping\ClassMetadata(OrderedProduct::class));
+    }
 }

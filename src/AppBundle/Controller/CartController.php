@@ -7,6 +7,7 @@ use AppBundle\Entity\OrderedProduct;
 use AppBundle\Entity\Product;
 use AppBundle\Entity\User;
 use AppBundle\Entity\UserOrder;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
@@ -14,6 +15,7 @@ use Symfony\Component\Routing\Annotation\Route;
 /**
  * Class CartController
  * @package AppBundle\Controller
+ * @Security("is_granted('IS_AUTHENTICATED_FULLY')")
  * @Route("/cart")
  */
 class CartController extends Controller

@@ -19,14 +19,44 @@
                 <td>{{ product.name }}</td>
                 <td>{{ product.quantity }}</td>
                 <td>{{ product.price }}</td>
-                <td align="right"><a href="{{ path('remove_product', {"id":product.id}) }}">
-                        <button class="btn btn-sm btn-danger">Изтрий</button>
-                    </a></td>
+                <td align="right">
+                    <button type="button" class="btn btn-sm btn-danger" data-toggle="modal"
+                            data-target="#deleteProduct">
+                        Изтрий
+                    </button>
+                </td>
             </tr>
+
+            <!-- Modal -->
+            <div class="modal fade" id="deleteProduct" tabindex="-1" role="dialog"
+                 aria-labelledby="deleteProductCenterTitle" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="deleteProductCenterTitle">Изтриване</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            Сигурен ли сте, че искате да изтриете продукта?
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-success" data-dismiss="modal">Откажи</button>
+                            <a
+                                    href="{{ path('remove_product', {"id":product.id}) }}">
+                                <button type="button" class="btn btn-danger btn-xs">Изтрий</button>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
         {% endfor %}
+
         <tr>
             <td colspan="5" align="right" style="font-weight: bold">Обща сума: {{ total }}</td>
         </tr>
+
         {% if products %}
             <tr>
                 <td colspan="5" align="right"><a href="{{ path('order_products') }}">
@@ -34,8 +64,8 @@
                     </a></td>
             </tr>
         {% endif %}
+
         </tbody>
     </table>
-
 
 {% endblock %}

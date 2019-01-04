@@ -2,6 +2,10 @@
 
 namespace AppBundle\Repository;
 
+use AppBundle\Entity\UserOrder;
+use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\ORM\Mapping;
+
 /**
  * UserOrderRepository
  *
@@ -10,4 +14,8 @@ namespace AppBundle\Repository;
  */
 class UserOrderRepository extends \Doctrine\ORM\EntityRepository
 {
+    public function __construct(EntityManagerInterface $em)
+    {
+        parent::__construct($em, new Mapping\ClassMetadata(UserOrder::class));
+    }
 }

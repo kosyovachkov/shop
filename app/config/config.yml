@@ -36,6 +36,9 @@ framework:
 twig:
     debug: '%kernel.debug%'
     strict_variables: '%kernel.debug%'
+    globals:
+        product_categories: '@AppBundle\Service\Category\Category'
+        cart_products: '@AppBundle\Service\Cart\Cart'
 
 # Doctrine Configuration
 doctrine:
