@@ -1,0 +1,25 @@
+{% extends "base.html.twig" %}
+
+{% block body %}
+<div class="container body-content span=8 offset=2">
+    <div class="well">
+        <h2 class="page-title">Добави категория</h2>
+        <br/>
+        {{ form_start(form) }}
+
+        <div class="form-group row">
+            <div class="col-sm-2 col-form-label">
+                {{ form_label(form.name) }}
+            </div>
+            <div class="col-sm-4">
+                {{ form_widget(form.name) }}
+            </div>
+        </div>
+        <div class="form-group row">
+            <button class="btn btn-primary">Добави</button>
+        </div>
+        {{ form_end(form) }}
+    </div>
+</div>
+
+        {% endblock %}

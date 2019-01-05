@@ -1,0 +1,32 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h2>Профил</h2>
+    <div class="card" style="width: 28rem;">
+        <ul class="list-group list-group-flush">
+            <li class="list-group-item"><span>Име: </span>{{ user.firstName }}</li>
+            <li class="list-group-item"><span>Фамилия: </span>{{ user.lastName }}</li>
+            <li class="list-group-item"><span>Email: </span>{{ user.email }}</li>
+            <li class="list-group-item"><span>Брой поръчки: </span>{{ user.orders.count }}
+                <span style="float: right"><a href="{{ path('user_orders', {"id":user.id}) }}">Виж поръчките</a></span></li>
+            <li class="list-group-item"><span>Администратор: </span>
+                {% if user.admin %}
+                    ДА
+                {% else %}
+                    НЕ
+                {% endif %}
+            </li>
+            {% if not user.admin %}
+            <li class="list-group-item">
+                <a href="{{ path('user-adminEdit', {"id":user.id}) }}">
+                    <button type="button" class="btn btn-success btn-xs">Направи администратор</button>
+                </a>
+                <a href="{{ path('user-delete', {"id":user.id}) }}">
+                    <button type="button" class="btn btn-danger btn-xs">Изтрий потребител</button>
+                </a>
+            </li>
+            {% endif %}
+        </ul>
+    </div>
+{% endblock %}
+

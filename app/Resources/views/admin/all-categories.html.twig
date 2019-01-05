@@ -1,0 +1,60 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h2>Категории</h2>
+
+    {% for msg in app.session.flashBag.get("deleteInfo") %}
+        <div id="infomsg" class="alert alert-danger">
+            <a href="#" class="close" data-dismiss="alert" aria-label="close">x</a>
+            {{ msg }}
+        </div>
+    {% endfor %}
+
+<table class="table table-dark">
+    <tr>
+        <th>#</th>
+        <th>Категория</th>
+        <th><div align="right">Действия</div></th>
+    </tr>
+    <tbody>
+    {% for category in categories %}
+        <tr>
+            <th scope="row">{{ loop.index }}</th>
+            <td>{{ category.name }}</td>
+            <td align="right">
+                <a href="{{ path('edit_category', {"id":category.id}) }}">
+                    <button type="button" class="btn btn-sm btn-success">Редактирай</button>
+                </a>
+                <a href="{{ path('remove_category', {"id":category.id}) }}">
+                    <button type="button" class="btn btn-sm btn-danger">Изтрий</button>
+                </a>
+            </td>
+        </tr>
+    {% endfor %}
+    </tbody>
+</table>
+
+    <hr>
+
+    <div class="container body-content span=8 offset=2">
+        <div class="well">
+            <h4 class="page-title">Добави категория</h4>
+            <br/>
+            {{ form_start(form) }}
+
+            <div class="form-group row">
+                <div class="col-sm-2 col-form-label">
+                    {{ form_label(form.name) }}
+                </div>
+                <div class="col-sm-4">
+                    {{ form_widget(form.name) }}
+                </div>
+            </div>
+            <div class="form-group row">
+                <button class="btn btn-primary">Добави</button>
+            </div>
+            {{ form_end(form) }}
+        </div>
+    </div>
+{% endblock %}
+

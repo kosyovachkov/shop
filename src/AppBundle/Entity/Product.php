@@ -108,16 +108,7 @@ class Product
      */
     private $category;
 
-    /**
-     * @var ArrayCollection
-     * @ORM\ManyToMany(targetEntity="AppBundle\Entity\Cart", mappedBy="products")
-     */
-    private $carts;
 
-
-    /**
-     * Product constructor.
-     */
     public function __construct()
     {
         $this->carts = new ArrayCollection();

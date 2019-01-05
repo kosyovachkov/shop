@@ -35,10 +35,7 @@ class Category
      */
     private $products;
 
-    /**
-     * Category constructor.
-     * @param ArrayCollection $products
-     */
+
     public function __construct()
     {
         $this->products = new ArrayCollection();

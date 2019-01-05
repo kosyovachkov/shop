@@ -6,33 +6,48 @@
             <h3>{{ msg }}</h3>
         </div>
     {% endfor %}
+    <div class="container">
 
-    <h3> <span class="badge badge-primary">{{  category.name }}</span></h3>
+    <h3><span class="badge badge-primary">{{ category.name }}</span></h3>
 
     <div class="row">
-        {% for product in products %}
+        {% for product in pagination %}
             <div class="col-md-4">
                 <div class="card mb-4 shadow-sm">
                     <a href="{{ path('view_product', {"id":product.id}) }}">
-                        <img class="card-img-top" src="{{ asset('uploads/images/' ~ product.image) }}" width="229" height="260"
+                        <img class="card-img-top" src="{{ asset('uploads/images/' ~ product.image) }}" width="229"
+                             height="260"
                              alt="Card image cap">
                     </a>
                     <div class="card-body">
                         <h5 class="card-title">{{ product.name }} <span class="badge badge-success">Ново!</span></h5>
                         <h5 class="card-title" style="color: red; font-weight: bold">{{ product.price }} лв.</h5>
-                        <p class="card-text">{{ product.introText }}...<br>>> <a href="{{ path('view_product', {"id":product.id}) }}">Виж цялото описание</a> <<</p>
+                        <p class="card-text">{{ product.introText }}...<br>>> <a
+                                    href="{{ path('view_product', {"id":product.id}) }}">Виж цялото описание</a> <<</p>
                     </div>
                     <div class="card-footer">
                         <div class="btn-group">
-                            <a href="{{ path('view_product', {"id":product.id}) }}"><button type="button" class="btn btn-md btn-outline-info">Разгледай</button></a>
+                            <a href="{{ path('view_product', {"id":product.id}) }}">
+                                <button type="button" class="btn btn-md btn-outline-info">Разгледай</button>
+                            </a>
 
-                            <a href="{{ path('add_to_cart', {"id":product.id}) }}"><button type="button" class="btn btn-md btn-outline-danger">Добави в количката</button></a>
+                            <a href="{{ path('add_to_cart', {"id":product.id}) }}">
+                                <button type="button" class="btn btn-md btn-outline-danger">Добави в количката</button>
+                            </a>
 
                         </div>
                     </div>
                 </div>
             </div>
         {% endfor %}
+    </div>
+
+    {# display navigation #}
+
+    <div class="navigation text-center">
+        {{ knp_pagination_render(pagination) }}
+    </div>
+
     </div>
 
 {% endblock %}

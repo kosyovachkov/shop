@@ -60,6 +60,28 @@
                 </div>
             </footer>
         {% endfor %}
+
+        <!-- Modal -->
+        <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog"
+             aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalCenterTitle">Изтриване</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        Сигурен ли сте, че искате да изтриете продукта?
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-success" data-dismiss="modal">Откажи</button>
+                        <a href={{ path('delete_product_from_category', {"id":product.id}) }}><button type="button" class="btn btn-danger btn-xs">Изтрий</button></a>
+                    </div>
+                </div>
+            </div>
+        </div>
     {% endif %}
     </div>
 
@@ -67,27 +89,6 @@
 
 
 
-    <!-- Modal -->
-    <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog"
-         aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalCenterTitle">Изтриване</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    Сигурен ли сте, че искате да изтриете продукта?
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-success" data-dismiss="modal">Откажи</button>
-                    <button type="button" class="btn btn-danger btn-xs"><a
-                                href={{ path('delete_product', {"id":product.id}) }}>Изтрий</a></button>
-                </div>
-            </div>
-        </div>
-    </div>
+
 
 {% endblock %}

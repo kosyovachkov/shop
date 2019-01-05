@@ -2,6 +2,15 @@
 
 {% block body %}
 
+    <h3>Регистрация на нов потребител</h3>
+
+    {% for msg in app.session.flashBag.get("registerInfo") %}
+        <div id="infomsg" class="alert alert-danger">
+            <a href="#" class="close" data-dismiss="alert" aria-label="close">x</a>
+            {{ msg }}
+        </div>
+    {% endfor %}
+
     {{ form_start(registerForm) }}
 
     <div class="form-group row">

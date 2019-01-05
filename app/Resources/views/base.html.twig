@@ -20,6 +20,11 @@
 
     {% endblock %}
     <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}"/>
+    <script>
+        setTimeout(function () {
+            $("#infomsg").fadeOut();
+        }, 2000)
+    </script>
 </head>
 
 <a href="{{ path('homepage') }}">
@@ -44,61 +49,71 @@
                                 Категории
                             </a>
 
-                            <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                            <span class="dropdown-menu" aria-labelledby="dropdownMenuLink">
                                 {% for category in product_categories.getAllCategories() %}
-                                <a class="dropdown-item" href="{{ path('category', {"id":category.id}) }}">{{ category.name }}</a>
+                                    <a class="dropdown-item"
+                                       href="{{ path('category', {"id":category.id}) }}">{{ category.name }}
+                                    </a>
                                 {% endfor %}
-
-                            </div>
+                            </span>
                         </span>
-                    {#<button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-                        <span class="icon-bar">rrr</span>
-                        <span class="icon-bar">ppp</span>
-                        <span class="icon-bar">vvv</span>
-                    </button>#}
                 </div>
-
 
                 <div class="navbar-right">
                     {% if app.user %}
-                    <div class="navbar-brand">Здравей, <a
-                                href="{{ path('user_profile') }}">{{ app.user.firstName }}</a>!
-                    </div>
-                    <span> <a href="{{ path('view_cart') }}">
+                        <div class="navbar-brand">Здравей, <a
+                                    href="{{ path('user_profile') }}">{{ app.user.firstName }}</a>!
+                        </div>
+                        <span> <a href="{{ path('view_cart') }}">
                                     Количка
-                                </a><i class="fas fa-cart-arrow-down"></i> ({{ cart_products.numberOfProductsInCart() }}) | </span>
-                    <span>
+                                </a><i class="fas fa-cart-arrow-down"></i> ({{ cart_products.numberOfProductsInCart() }}) |
+                    </span>
+
+                        {% for role in app.user.roles if role == 'ROLE_ADMIN' %}
+                            </span>
                             <span class="dropdown">
+                            <a class="dropdown-toggle" href="#" id="dropdownMenuLink"
+                               data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                Администрация
+                            </a>
+
+                            <span class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                                <a class="dropdown-item" href="{{ path('category_show_all') }}">Продукти</a>
+                                <a class="dropdown-item" href="{{ path('categories_all') }}">Категории</a>
+                                <a class="dropdown-item" href="{{ path('users_all') }}">Потребители</a>
+                                <a class="dropdown-item" href="#">------------------------</a>
+                                 <a class="dropdown-item" href="{{ path('orders_all') }}">Моите поръчки</a>
+                                <a class="dropdown-item" href="{{ path('user_profile') }}">Редакция на профил</a>
+                                <a class="dropdown-item" href="{{ path('logout') }}">Изход</a>
+                            </span>
+                        </span>
+
+                        {% else %}
+
+                        <span class="dropdown">
                             <a class="dropdown-toggle" href="#" id="dropdownMenuLink"
                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 Потребителско меню
                             </a>
 
-                            <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                            <span class="dropdown-menu" aria-labelledby="dropdownMenuLink">
                                 <a class="dropdown-item" href="{{ path('orders_all') }}">Моите поръчки</a>
                                 <a class="dropdown-item" href="{{ path('user_profile') }}">Редакция на профил</a>
                                 <a class="dropdown-item" href="{{ path('logout') }}">Изход</a>
-                            </div>
-                                {# </span>
-                                     <a href="{{ path('orders_all') }}">
-                                         Моите поръчки
-                                     </a>|</span>
-                                 <span>
-                                 <a href="{{ path('user_profile') }}">
-                                     Профил
-                                 </a>|</span>
-                                 <a href="{{ path('logout') }}">
-                                     Logout
-                                 </a>#}
-                                {% else %}
-                                    <span>
+                            </span>
+                        </span>
+                        {% endfor %}
+
+                    {% else %}
+                        <span>
                         <a href="{{ path('register') }}">
                             РЕГИСТРИРАЙ СЕ
-                        </a>|</span>
-                                    <a href="{{ path('login') }}">
+                        </a>|
+                        </span>
+                        <a href="{{ path('login') }}">
                             ВХОД
                         </a>
-                                {% endif %}
+                    {% endif %}
                 </div>
             </div>
 
@@ -108,10 +123,6 @@
 
 <div class="container">
     {% block body %}
-        {#
-                    <div id="main" class="col-sm-9">
-                        {% block main %}{% endblock %}
-                    </div>#}
 
     {% endblock %}
 </div>

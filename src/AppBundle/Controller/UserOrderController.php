@@ -22,9 +22,11 @@ class UserOrderController extends Controller
      * @return \Symfony\Component\HttpFoundation\Response
      * @Route("/all", name="orders_all")
      */
-    public function allOrders(){
+    public function allMyOrders(){
 
-        $orders = $this->getDoctrine()->getRepository(UserOrder::class)->findAll();
+        $user = $this->getUser();
+
+        $orders = $this->getDoctrine()->getRepository(UserOrder::class)->findBy(["user"=>$user]);
 
         return $this->render("order/all.html.twig", ["orders"=>$orders]);
     }
@@ -34,7 +36,7 @@ class UserOrderController extends Controller
      * @return \Symfony\Component\HttpFoundation\Response
      * @Route("/view/{id}", name="view_order")
      */
-    public function viewOrder(int $id){
+    public function viewMyOrder(int $id){
 
         $order = $this->getDoctrine()->getRepository(UserOrder::class)->find($id);
 

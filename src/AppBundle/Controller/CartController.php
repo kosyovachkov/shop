@@ -81,6 +81,11 @@ class CartController extends Controller
          * @var User $user
          */
         $user = $this->getUser();
+
+        if ($user == null) {
+            return $this->redirectToRoute("login");
+        }
+
         $products = [];
            foreach($user->getCart()->getOrderedProducts() as $product){
                if(!$product->getUserOrder()){
@@ -102,9 +107,14 @@ class CartController extends Controller
         /**
          * @var User $user
          */
+        $user = $this->getUser();
+
+        if ($user == null) {
+            return $this->redirectToRoute("login");
+        }
+
         $em = $this->getDoctrine()->getManager();
 
-        $user = $this->getUser();
         $userCart = $user->getCart();
         $productsInCart = $userCart->getOrderedProducts();
 
@@ -138,9 +148,16 @@ class CartController extends Controller
     public function removeProductsFromCart(int $id)
     {
 
-        $em = $this->getDoctrine()->getManager();
-
+        /**
+         * @var User $user
+         */
         $user = $this->getUser();
+
+        if ($user == null) {
+            return $this->redirectToRoute("login");
+        }
+
+        $em = $this->getDoctrine()->getManager();
 
         /**
          * @var Cart $userCart

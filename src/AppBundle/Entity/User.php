@@ -86,7 +86,7 @@ class User implements UserInterface
     /**
      * @var Cart
      * @ORM\OneToOne(targetEntity="AppBundle\Entity\Cart", inversedBy="user")
-     * @ORM\JoinColumn(name="cart_id", referencedColumnName="id")
+     * @ORM\JoinColumn(name="cart_id", referencedColumnName="id", onDelete="CASCADE")
      */
     private $cart;
 

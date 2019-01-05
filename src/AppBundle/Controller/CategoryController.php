@@ -5,6 +5,7 @@ namespace AppBundle\Controller;
 use AppBundle\Entity\Category;
 use AppBundle\Entity\Product;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
@@ -20,15 +21,23 @@ class CategoryController extends Controller
     }
 
     /**
+     * @param Request $request
      * @param int $id
-     * @Route("/{id}", name="category")
      * @return \Symfony\Component\HttpFoundation\Response
+     * @Route("/{id}", name="category")
      */
-    public function getAllProductsFromCategory(int $id){
+    public function getAllProductsFromCategory(Request $request, int $id){
 
         $products = $this->getDoctrine()->getRepository(Product::class)->findBy(["category"=>$id]);
         $category = $this->getDoctrine()->getRepository(Category::class)->findOneBy(["id"=>$id]);
 
-        return $this->render('category/all.html.twig', ["products"=>$products, "category"=>$category]);
+        $paginator  = $this->get('knp_paginator');
+        $pagination = $paginator->paginate(
+            $products, /* query NOT result */
+            $request->query->getInt('page', 1)/*page number*/,
+            6/*limit per page*/
+        );
+
+        return $this->render('category/all.html.twig', ["pagination"=>$pagination, "category"=>$category]);
     }
 }

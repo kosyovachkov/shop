@@ -1,0 +1,53 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h2>Продукти в {{ category.name }}</h2>
+    <table class="table table-dark">
+        <tr>
+            <th>#</th>
+            <th>Снимка на продукта</th>
+            <th>Име</th>
+            <th>Налично количество</th>
+            <th>Единична цена</th>
+            <th>Промоционална цена</th>
+            <th>Препоръчан</th>
+            <th>
+                <div align="right">Действия</div>
+            </th>
+        </tr>
+        <tbody>
+
+        {% for product in products %}
+            <tr>
+                <th scope="row">{{ loop.index }}</th>
+                <td><img src="{{ asset('uploads/images/'~product.image) }}" width="200px"></td>
+                <td>{{ product.name }}</td>
+                <td>{{ product.quantity }}</td>
+                <td>{{ product.price }}</td>
+                <td>{% if product.promoPrice %}
+                        {{ product.promoPrice }}
+                    {% else %}
+                        -
+                    {% endif %}
+                </td>
+                <td>{% if product.featured %}
+                        ДА
+                    {% else %}
+                        НЕ
+                    {% endif %}
+                </td>
+                <td align="right">
+                    <a href="{{ path('edit_product', {"id":product.id}) }}">
+                        <button type="button" class="btn btn-sm btn-success">Редактирай</button>
+                    </a>
+                    <a href="{{ path('delete_product_from_category', {"id":product.id}) }}">
+                        <button type="button" class="btn btn-sm btn-danger">Изтрий</button>
+                    </a>
+                </td>
+            </tr>
+        {% endfor %}
+
+        </tbody>
+    </table>
+{% endblock %}
+
