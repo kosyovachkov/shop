@@ -30,10 +30,9 @@ class User implements UserInterface
      *
      * @ORM\Column(name="email", type="string", length=255, unique=true)
      *
-     * @Assert\Email(
-     *     message = "The email '{{ value }}' is not a valid email.",
-     *     checkMX = true
-     * )
+     * @Assert\NotBlank(message="И-мейлът е задължителен.")
+     * @Assert\Email()
+     *
      */
     private $email;
 
@@ -60,11 +59,18 @@ class User implements UserInterface
      *
      * @ORM\Column(name="password", type="string", length=255)
      *
+     * @Assert\NotBlank(message="Паролата е задължителна.", groups={"registration"})
      * @Assert\Length(
-     *      min = 6,
-     *      max = 12,
-     *      minMessage = "Your first name must be at least {{ limit }} characters long",
-     *      maxMessage = "Your first name cannot be longer than {{ limit }} characters"
+     *     min="6",
+     *     max="12",
+     *     minMessage="Паролата трябва да е дълга поне {{ limit }} символа.",
+     *     maxMessage="Паролата трябва да съдържа не повече от {{ limit }} символа.",
+     *     groups={"registration"}
+     * )
+     * @Assert\Regex(
+     *     pattern="/^[A-Za-z0-9]+$/",
+     *     message="Паролата трябва се състои само от малки и главни букви и цифри.",
+     *     groups={"registration"}
      * )
      */
     private $password;
@@ -73,6 +79,8 @@ class User implements UserInterface
      * @var string
      *
      * @ORM\Column(name="address", type="string", length=255)
+     *
+     * @Assert\NotBlank()
      */
     private $address;
 

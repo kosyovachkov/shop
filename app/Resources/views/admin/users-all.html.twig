@@ -1,7 +1,9 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
+    <hr>
     <h2>Потребители</h2>
+    <hr>
     <table class="table table-dark">
         <tr>
             <th>#</th>
@@ -19,7 +21,7 @@
                 <td>{{ user.email }}</td>
                 <td align="right">
                     <a href="{{ path('view-user', {"id":user.id}) }}">
-                        <button type="button" class="btn btn-danger btn-xs">Разгледай профил</button>
+                        <button type="button" class="btn btn-info btn-xs">Разгледай профил</button>
                     </a>
                 </td>
             </tr>

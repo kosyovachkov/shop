@@ -3,14 +3,17 @@
 {% block body %}
 
     {% for msg in app.session.flashBag.get("deleteInfo") %}
-        <div class="alert alert-danger">
-            <h3>{{ msg }}</h3>
+        <div id="infomsg" class="alert alert-danger">
+            <a href="#" class="close" data-dismiss="alert" aria-label="close">x</a>
+            {{ msg }}
         </div>
     {% endfor %}
 
     <div class="container body-content span=8 offset=2">
         <div class="well">
+            <hr>
             <h2 class="page-title">Редактирай категория</h2>
+            <hr>
             <br/>
             {{ form_start(form) }}
 
@@ -21,12 +24,28 @@
                 <div class="col-sm-4">
                     {{ form_widget(form.name) }}
                 </div>
+                <div class="col-sm-2">{{ form_errors(form.name) }}</div>
             </div>
             <div class="form-group row">
-                <button class="btn btn-primary">Редактирай</button>
+                <button class="btn btn-info">Редактирай</button>
             </div>
             {{ form_end(form) }}
         </div>
     </div>
 {% endblock %}
 
+
+{% form_theme form _self %}
+
+{# form_errors.html.twig #}
+{% block form_errors %}
+    {% spaceless %}
+        {% if errors|length > 0 %}
+            {% for error in errors %}
+                <div class="offset-sm-2">
+                    <div class="alert alert-danger" style="width: 500px;font-weight: bold" role="alert">
+                        {{ error.message }}</div></div>
+            {% endfor %}
+        {% endif %}
+    {% endspaceless %}
+{% endblock form_errors %}

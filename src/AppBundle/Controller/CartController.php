@@ -9,6 +9,7 @@ use AppBundle\Entity\User;
 use AppBundle\Entity\UserOrder;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -72,6 +73,60 @@ class CartController extends Controller
     }
 
     /**
+     * @param Request $request
+     * @param int $id
+     * @return \Symfony\Component\HttpFoundation\Response
+     * @Route("/product/add/{id}", name="add_product_to_cart")
+     */
+    public function addToCart(Request $request, int $id){
+        $user = $this->getUser();
+
+        if($user==null){
+            return $this->redirectToRoute("login");
+        }
+
+        $userCart = $user->getCart();
+        $product = $this->getDoctrine()->getRepository(Product::class)->findOneBy(["id" => $id]);
+
+        $newOrderedProduct = $userCart->getCurrentProduct($product->getId());
+
+        $form = $this->createFormBuilder($newOrderedProduct)
+            ->add("quantity", NumberType::class)
+            ->getForm();
+        $form->handleRequest($request);
+
+
+        if($form->isSubmitted()){
+
+            if($newOrderedProduct==null){
+                $newOrderedProduct = new OrderedProduct();
+                $newOrderedProduct->setName($product->getName());
+                $newOrderedProduct->setQuantity($form["quantity"]->getData());
+                $newOrderedProduct->setPrice($product->getPrice());
+                $newOrderedProduct->setProductId($id);
+                $newOrderedProduct->addCart($userCart);
+            }else{
+                $newOrderedProduct->setQuantity($newOrderedProduct->getQuantity()+$form["quantity"]->getData());
+            }
+            $userCart->addOrderedProduct($newOrderedProduct);
+
+            $product->setQuantity($product->getQuantity() - $form["quantity"]->getData());
+
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($product);
+            $em->persist($newOrderedProduct);
+            $em->persist($userCart);
+            $em->flush();
+
+            return $this->redirectToRoute("view_cart");
+        }
+
+        return $this->render("product/product.html.twig", ["product"=>$product, "form"=>$form->createView()]);
+
+    }
+
+
+    /**
      * @return \Symfony\Component\HttpFoundation\Response
      * @Route("/view", name="view_cart")
      */
@@ -87,11 +142,11 @@ class CartController extends Controller
         }
 
         $products = [];
-           foreach($user->getCart()->getOrderedProducts() as $product){
-               if(!$product->getUserOrder()){
-                   $products[]=$product;
-               }
-           };
+        foreach ($user->getCart()->getOrderedProducts() as $product) {
+            if (!$product->getUserOrder()) {
+                $products[] = $product;
+            }
+        };
 
         $total = $user->getCart()->getTotal();
 
@@ -121,15 +176,15 @@ class CartController extends Controller
         $order = new UserOrder();
         $order->setUser($user);
         foreach ($productsInCart as $product) {
-            if(!$product->getUserOrder()){
+            if (!$product->getUserOrder()) {
                 $product->setUserOrder($order);
                 $order->addProduct($product);
             }
         }
 
-       /* foreach ($productsInCart as $product) {
-            $product->setIsActive(false);
-        }*/
+        /* foreach ($productsInCart as $product) {
+             $product->setIsActive(false);
+         }*/
 
         $userCart->dropProducts();
 

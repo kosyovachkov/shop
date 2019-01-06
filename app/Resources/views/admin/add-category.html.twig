@@ -3,7 +3,9 @@
 {% block body %}
 <div class="container body-content span=8 offset=2">
     <div class="well">
+        <hr>
         <h2 class="page-title">Добави категория</h2>
+        <hr>
         <br/>
         {{ form_start(form) }}
 
@@ -14,12 +16,29 @@
             <div class="col-sm-4">
                 {{ form_widget(form.name) }}
             </div>
+            <div class="col-sm-2">{{ form_errors(form.name) }}</div>
         </div>
         <div class="form-group row">
-            <button class="btn btn-primary">Добави</button>
+            <button class="btn btn-info">Добави</button>
         </div>
         {{ form_end(form) }}
     </div>
 </div>
 
         {% endblock %}
+
+
+{% form_theme form _self %}
+
+{# form_errors.html.twig #}
+{% block form_errors %}
+    {% spaceless %}
+        {% if errors|length > 0 %}
+            {% for error in errors %}
+                <div class="offset-sm-2">
+                    <div class="alert alert-danger" style="width: 500px;font-weight: bold" role="alert">
+                        {{ error.message }}</div></div>
+            {% endfor %}
+        {% endif %}
+    {% endspaceless %}
+{% endblock form_errors %}

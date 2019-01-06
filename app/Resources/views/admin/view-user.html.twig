@@ -1,7 +1,9 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
+    <hr>
     <h2>Профил</h2>
+    <hr>
     <div class="card" style="width: 28rem;">
         <ul class="list-group list-group-flush">
             <li class="list-group-item"><span>Име: </span>{{ user.firstName }}</li>
@@ -19,7 +21,7 @@
             {% if not user.admin %}
             <li class="list-group-item">
                 <a href="{{ path('user-adminEdit', {"id":user.id}) }}">
-                    <button type="button" class="btn btn-success btn-xs">Направи администратор</button>
+                    <button type="button" class="btn btn-info btn-xs">Направи администратор</button>
                 </a>
                 <a href="{{ path('user-delete', {"id":user.id}) }}">
                     <button type="button" class="btn btn-danger btn-xs">Изтрий потребител</button>

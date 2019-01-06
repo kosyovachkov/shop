@@ -20,29 +20,4 @@ class CartRepository extends \Doctrine\ORM\EntityRepository
         parent::__construct($em, new Mapping\ClassMetadata(Cart::class));
     }
 
-    public function getProductsInCart(string $email){
-
-        $qb = $this->getEntityManager()->createQueryBuilder();
-        $qb
-            ->select('Product')
-            ->from('User', 'User')
-            ->join('Path\Bundle\Entity\WorkHour', 'wh',
-                'WITH', 'User.workHour = wh')
-            ->where('wh.project = :project')
-            ->setParameter('project', $email)
-        ;
-
-    $query = $qb->getQuery();
-
-    return $query->getResult();
-
-
-       /* return $this->createQueryBuilder("p")
-            ->from("p.products", "p")
-            ->join("p.user", "user")
-            ->where("user.email=:pcId")
-            ->setParameter("pcId", $email)
-            ->getQuery()
-            ->getResult();*/
-    }
 }

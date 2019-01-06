@@ -4,6 +4,7 @@ namespace AppBundle\Controller;
 
 use AppBundle\Entity\Cart;
 use AppBundle\Entity\Category;
+use AppBundle\Entity\Message;
 use AppBundle\Entity\OrderedProduct;
 use AppBundle\Entity\Product;
 use AppBundle\Entity\Role;
@@ -304,16 +305,19 @@ class AdminController extends Controller
                 }
 
                 $product->setImage($fileName);
+
+                $catId = $form["category"]->getData()->getId();
+
                 $em = $this->getDoctrine()->getManager();
                 $em->persist($product);
                 $em->flush();
 
-                return $this->redirectToRoute("homepage");
+                return $this->redirectToRoute("products_in_category", ["id" => $catId]);
             }
 
             return $this->render("product/create.html.twig", ["productForm" => $form->createView()]);
         } else {
-            return $this->redirectToRoute("homepage");
+            return $this->redirectToRoute("products_in_category");
         }
     }
 
@@ -364,7 +368,7 @@ class AdminController extends Controller
                 $em->persist($product);
                 $em->flush();
 
-                return $this->redirectToRoute("products_in_category", ["id"=>$catId]);
+                return $this->redirectToRoute("products_in_category", ["id" => $catId]);
             }
 
             return $this->render("product/edit.html.twig", ["productForm" => $form->createView(), "product" => $product]);
@@ -394,7 +398,7 @@ class AdminController extends Controller
             $em->remove($product);
             $em->flush();
 
-            return $this->redirectToRoute("products_in_category", ["id"=>$catId]);
+            return $this->redirectToRoute("products_in_category", ["id" => $catId]);
         }
     }
 
@@ -404,17 +408,18 @@ class AdminController extends Controller
      * @Route("/user/orders/all/{id}", name="user_orders")
      * @Security("is_granted('IS_AUTHENTICATED_FULLY')")
      */
-    public function allUserOrders(int $id){
+    public function allUserOrders(int $id)
+    {
 
         $currentUser = $this->getUser();
 
-        if($currentUser->isAdmin()){
+        if ($currentUser->isAdmin()) {
 
             $user = $this->getDoctrine()->getRepository(User::class)->find($id);
 
-            $orders = $this->getDoctrine()->getRepository(UserOrder::class)->findBy(["user"=>$user]);
+            $orders = $this->getDoctrine()->getRepository(UserOrder::class)->findBy(["user" => $user]);
 
-            return $this->render("order/all.html.twig", ["orders"=>$orders]);
+            return $this->render("order/all.html.twig", ["orders" => $orders]);
         }
 
     }
@@ -440,16 +445,72 @@ class AdminController extends Controller
      * @return \Symfony\Component\HttpFoundation\Response
      * @Route("/category/{id}/products", name="products_in_category")
      */
-    public function showAllProductsInCategory(int $id){
+    public function showAllProductsInCategory(int $id)
+    {
 
         $currentUser = $this->getUser();
 
         if ($currentUser->isAdmin()) {
 
             $category = $this->getDoctrine()->getRepository(Category::class)->find($id);
-            $products = $this->getDoctrine()->getRepository(Product::class)->findBy(["category"=>$category]);
+            $products = $this->getDoctrine()->getRepository(Product::class)->findBy(["category" => $category]);
 
-            return $this->render("admin/view-products-in-category.html.twig", ["products"=>$products, "category"=>$category]);
+            return $this->render("admin/view-products-in-category.html.twig", ["products" => $products, "category" => $category]);
+
+        }
+    }
+
+    /**
+     * @return \Symfony\Component\HttpFoundation\Response
+     * @Route("/message/all", name="all_messages")
+     */
+    public function getAllMessages()
+    {
+        $currentUser = $this->getUser();
+
+        if ($currentUser->isAdmin()) {
+
+            $messages = $this->getDoctrine()->getRepository(Message::class)->findBy([],["dateAdded"=>"DESC"]);
+
+            return $this->render("admin/view-all-messages.html.twig", ["messages" => $messages]);
+
+        }
+    }
+
+    /**
+     * @param int $id
+     * @return \Symfony\Component\HttpFoundation\Response
+     * @Route("/message/{id}", name="view_one_message")
+     */
+    public function getMessage(int $id){
+        $currentUser = $this->getUser();
+
+        if ($currentUser->isAdmin()) {
+
+            $message = $this->getDoctrine()->getRepository(Message::class)->find($id);
+
+            return $this->render("admin/view-message.html.twig", ["message"=>$message]);
+        }
+    }
+
+    /**
+     * @param int $id
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     * @Route("/message/delete/{id}", name="delete_message")
+     */
+    public function deleteMessage(int $id){
+        $currentUser = $this->getUser();
+
+        if ($currentUser->isAdmin()) {
+            $message = $this->getDoctrine()->getRepository(Message::class)->find($id);
+
+            $em = $this->getDoctrine()->getManager();
+            $em->remove($message);
+            $em->flush();
+
+            $this->addFlash("messageDeleteInfo", "Съобщението беше успешно изтрито.");
+
+            return $this->redirectToRoute("all_messages");
 
         }
     }

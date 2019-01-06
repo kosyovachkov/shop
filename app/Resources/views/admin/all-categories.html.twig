@@ -1,7 +1,9 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
+    <hr>
     <h2>Категории</h2>
+    <hr>
 
     {% for msg in app.session.flashBag.get("deleteInfo") %}
         <div id="infomsg" class="alert alert-danger">
@@ -23,7 +25,7 @@
             <td>{{ category.name }}</td>
             <td align="right">
                 <a href="{{ path('edit_category', {"id":category.id}) }}">
-                    <button type="button" class="btn btn-sm btn-success">Редактирай</button>
+                    <button type="button" class="btn btn-sm btn-info">Редактирай</button>
                 </a>
                 <a href="{{ path('remove_category', {"id":category.id}) }}">
                     <button type="button" class="btn btn-sm btn-danger">Изтрий</button>
@@ -38,7 +40,9 @@
 
     <div class="container body-content span=8 offset=2">
         <div class="well">
+            <hr>
             <h4 class="page-title">Добави категория</h4>
+            <hr>
             <br/>
             {{ form_start(form) }}
 
@@ -51,7 +55,7 @@
                 </div>
             </div>
             <div class="form-group row">
-                <button class="btn btn-primary">Добави</button>
+                <button class="btn btn-info">Добави</button>
             </div>
             {{ form_end(form) }}
         </div>

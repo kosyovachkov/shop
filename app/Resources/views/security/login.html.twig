@@ -1,8 +1,15 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-
+    <hr>
     <h3>Вход към магазина</h3>
+    <hr>
+    {% for msg in app.session.flashBag.get("loginInfo") %}
+        <div id="infomsg" class="alert alert-danger">
+            <a href="#" class="close" data-dismiss="alert" aria-label="close">x</a>
+            {{ msg }}
+        </div>
+    {% endfor %}
 
     <form name="authenticate" action="{{ path('login') }}" method="post">
 
@@ -20,7 +27,7 @@
                 Парола:
             </div>
             <div class="col-sm-4">
-                <input class="form-control" type="text" name="_password">
+                <input class="form-control" type="password" name="_password">
             </div>
         </div>
 

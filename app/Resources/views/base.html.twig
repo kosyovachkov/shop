@@ -23,16 +23,11 @@
     <script>
         setTimeout(function () {
             $("#infomsg").fadeOut();
-        }, 2000)
+        }, 2000);
     </script>
 </head>
 
-<a href="{{ path('homepage') }}">
-    <h1 style="text-align: center">Le Grand Blue</h1>
-    <h2 style="text-align: center">Магазин за подводен риболов и свободно гмуркане</h2>
-</a>
 
-<body id="{% block body_id %}{% endblock %}">
 
 {% block header %}
     <header>
@@ -57,6 +52,9 @@
                                 {% endfor %}
                             </span>
                         </span>
+                    <a href="{{ path('contact_form') }}" class="navbar-brand">
+                        Контакти
+                    </a>
                 </div>
 
                 <div class="navbar-right">
@@ -66,7 +64,8 @@
                         </div>
                         <span> <a href="{{ path('view_cart') }}">
                                     Количка
-                                </a><i class="fas fa-cart-arrow-down"></i> ({{ cart_products.numberOfProductsInCart() }}) |
+                                </a><i class="fas fa-cart-arrow-down"></i> ({{ cart_products.numberOfProductsInCart() }}
+                            ) |
                     </span>
 
                         {% for role in app.user.roles if role == 'ROLE_ADMIN' %}
@@ -81,6 +80,7 @@
                                 <a class="dropdown-item" href="{{ path('category_show_all') }}">Продукти</a>
                                 <a class="dropdown-item" href="{{ path('categories_all') }}">Категории</a>
                                 <a class="dropdown-item" href="{{ path('users_all') }}">Потребители</a>
+                                <a class="dropdown-item" href="{{ path('all_messages') }}">Съобщения</a>
                                 <a class="dropdown-item" href="#">------------------------</a>
                                  <a class="dropdown-item" href="{{ path('orders_all') }}">Моите поръчки</a>
                                 <a class="dropdown-item" href="{{ path('user_profile') }}">Редакция на профил</a>
@@ -90,7 +90,7 @@
 
                         {% else %}
 
-                        <span class="dropdown">
+                            <span class="dropdown">
                             <a class="dropdown-toggle" href="#" id="dropdownMenuLink"
                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 Потребителско меню
@@ -121,13 +121,63 @@
     </header>
 {% endblock %}
 
+<a href="{{ path('homepage') }}">
+
+    <div class="row">
+        <div class="col-12">
+            <img src="{{ asset('images/backgrounds/spearfishing2.jpg') }}" alt="test" class="img-responsive">
+            <div class="carousel-caption">
+                <h1 style="text-align: center">Le Grand Blue</h1>
+                <h2 style="text-align: center">Магазин за подводен риболов и свободно гмуркане</h2>
+                <div class="container">
+                    {% block jumboo %} {% endblock %}
+                </div>
+            </div>
+        </div>
+    </div>
+
+</a>
+<hr class="container" style="border: 1px solid deepskyblue;">
 <div class="container">
     {% block body %}
-
+        {% block offers %}
+        {% endblock %}
     {% endblock %}
 </div>
-
+<hr class="container" style="border: 1px solid deepskyblue; margin-bottom: 50px;margin-top: 50px;">
 {% block footer %}
+    <footer>
+    <div class="container panel-footer">
+    <div class="row">
+        <div class="col-4 rounded border border-primary" style="padding: 30px;">
+            <h4>Бързи връзки</h4>
+            <hr>
+            <p><a href="{{ path('homepage') }}">Начало</a></p>
+            <p><a href="{{ path('orders_all') }}">Моите поръчки</a></p>
+            <p><a href="{{ path('view_cart') }}">Количка</a></p>
+            <p><a href="#">Връзка с нас</a></p>
+        </div>
+        <div class="col-4 rounded border border-primary" style="padding: 30px;">
+            <h4>Продукти</h4>
+            <hr>
+            <p><a href="{{ path('homepage') }}">Последно добавени</a></p>
+            <p><a href="{{ path('orders_all') }}">Най-купувани</a></p>
+
+        </div>
+        <div class="col-4 rounded border border-primary" style="padding: 30px;">
+            <h4>Контакти</h4>
+            <hr>
+            <p>Адрес: София 1000</p>
+            <p>ул. София, N1, ап. 01</p>
+            <p>Телефон: 02/1234 5678</p>
+            <p>Мобилен: 088/888 888</p>
+        </div>
+
+        <div class="col"></div>
+
+    </div>
+    </div>
+    </footer>
     <footer>
         <div class="container modal-footer">
             <p>&copy; 2019 KDV</p>

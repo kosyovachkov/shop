@@ -34,6 +34,8 @@ class Product
      * @var string
      *
      * @ORM\Column(name="model", type="string", length=255, nullable=true)
+     *
+     * @Assert\NotBlank()
      */
     private $model;
 
@@ -48,6 +50,9 @@ class Product
      * @var int
      *
      * @ORM\Column(name="length", type="integer", nullable=true)
+     *
+     * @Assert\GreaterThan(value = 0)
+     * @Assert\LessThan(value="200")
      */
     private $length;
 
@@ -62,6 +67,8 @@ class Product
      * @var string
      *
      * @ORM\Column(name="image", type="string", nullable=false)
+     *
+     * @Assert\NotBlank()
      */
     private $image;
 
@@ -69,12 +76,15 @@ class Product
      * @var string
      *
      * @ORM\Column(name="description", type="text")
+     *
+     * @Assert\NotBlank()
      */
     private $description;
 
     /**
      * @var int
-     *
+     * @Assert\GreaterThan(value = 0)
+     * @Assert\LessThan(value="1000")
      * @ORM\Column(name="quantity", type="integer")
      */
     private $quantity;
@@ -88,8 +98,9 @@ class Product
     private $price;
 
     /**
-     * @var string
-     *
+     * @var double
+     * @Assert\GreaterThan(value = 0)
+     * @Assert\LessThan(value="1000")
      * @ORM\Column(name="promoPrice", type="decimal", precision=10, scale=2, nullable=true)
      */
     private $promoPrice;

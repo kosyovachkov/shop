@@ -1,17 +1,74 @@
 {% extends "base.html.twig" %}
 
 {% block body %}
+<hr>
+    <h3>Редакция на профил</h3>
+    <hr>
+    {% for msg in app.session.flashBag.get("registerInfo") %}
+        <div id="infomsg" class="alert alert-danger">
+            <a href="#" class="close" data-dismiss="alert" aria-label="close">x</a>
+            {{ msg }}
+        </div>
+    {% endfor %}
 
-    <form name="profile" method="post">
-        Email:<input type="text" name="user[email]" value="{{ user.email }}"></br>
-        First Name:<input type="text" name="user[firstName]" value="{{ user.firstName }}"></br>
-        Last Name:<input type="text" name="user[lastName]" value="{{ user.lastName }}"></br>
-        Password:<input type="text" name="user[password]"></br>
-        Repeat Password:<input type="text" name="repeatPassword"></br>
-        Address:<input type="text" name="user[address]" value="{{ user.address }}"></br></br>
+    {{ form_start(registerForm) }}
 
-        <input type="hidden" name="_csrf_token" value="{{ csrf_token("profile") }}">
-        <input type="submit" value="Промени">
-        <input type="reset" value="Обратно">
-    </form>
+    <div class="form-group row">
+        <div class="col-sm-2 col-form-label">
+            {{ form_label(registerForm.email) }}
+        </div>
+        <div class="col-sm-4">
+            {{ form_widget(registerForm.email) }}
+        </div>
+    </div>
+    <div class="form-group row">
+        <div class="col-sm-2 col-form-label">
+            {{ form_label(registerForm.firstName) }}
+        </div>
+        <div class="col-sm-4">
+            {{ form_widget(registerForm.firstName) }}
+        </div>
+    </div>
+    <div class="form-group row">
+        <div class="col-sm-2 col-form-label">
+            {{ form_label(registerForm.lastName) }}
+        </div>
+        <div class="col-sm-4">
+            {{ form_widget(registerForm.lastName) }}
+        </div>
+    </div>
+    <div class="form-group row">
+        <div class="col-sm-2 col-form-label">
+            {{ form_label(registerForm.password) }}
+        </div>
+        <div class="col-sm-4">
+            {{ form_widget(registerForm.password) }}
+        </div>
+    </div>
+    <div class="form-group row">
+        <div class="col-sm-2 col-form-label">
+            {{ form_label(registerForm.address) }}
+        </div>
+        <div class="col-sm-4">
+            {{ form_widget(registerForm.address) }}
+        </div>
+    </div>
+    <div class="form-group row">
+        <button class="btn btn-primary">Редактирай</button>
+    </div>
+
+    {{ form_end(registerForm) }}
+
+
+    {# <form name="register" method="post">
+         Email:<input type="text" name="user[email]"></br>
+         First Name:<input type="text" name="user[firstName]"></br>
+         Last Name:<input type="text" name="user[lastName]"></br>
+         Password:<input type="text" name="user[password]"></br>
+         Repeat Password:<input type="text" name="repeatPassword"></br>
+         Address:<input type="text" name="user[address]"></br></br>
+
+         <input type="hidden" name="_csrf_token" value="{{ csrf_token("register") }}">
+         <input type="submit" value="Register">
+     </form>#}
 {% endblock %}

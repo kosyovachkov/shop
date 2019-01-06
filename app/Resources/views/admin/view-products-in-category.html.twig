@@ -1,7 +1,9 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
+    <hr>
     <h2>Продукти в {{ category.name }}</h2>
+    <hr>
     <table class="table table-dark">
         <tr>
             <th>#</th>
@@ -38,7 +40,7 @@
                 </td>
                 <td align="right">
                     <a href="{{ path('edit_product', {"id":product.id}) }}">
-                        <button type="button" class="btn btn-sm btn-success">Редактирай</button>
+                        <button type="button" class="btn btn-sm btn-info">Редактирай</button>
                     </a>
                     <a href="{{ path('delete_product_from_category', {"id":product.id}) }}">
                         <button type="button" class="btn btn-sm btn-danger">Изтрий</button>

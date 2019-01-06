@@ -1,0 +1,88 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <div class="container body-content span=12 offset=2">
+        <div class="well">
+            <hr>
+            <h3>Форма за контакт с нас</h3>
+            <hr>
+
+            {% for msg in app.session.flashBag.get("messageInfo") %}
+                <div id="infomsg" class="alert alert-success">
+                    <a href="#" class="close" data-dismiss="alert" aria-label="close">x</a>
+                    {{ msg }}
+                </div>
+            {% endfor %}
+
+            {# {% for msg in app.session.flashBag.get("registerInfo") %}
+                 <div id="infomsg" class="alert alert-danger">
+                     <a href="#" class="close" data-dismiss="alert" aria-label="close">x</a>
+                     {{ msg }}
+                 </div>
+             {% endfor %}#}
+
+            {{ form_start(contactForm) }}
+
+            <div class="form-group row">
+                <div class="col-sm-2 col-form-label">
+                    {{ form_label(contactForm.email) }}
+                </div>
+                <div class="col-sm-4">
+                    {{ form_widget(contactForm.email) }}
+                </div>
+                <div class="col-sm-2">{{ form_errors(contactForm.email) }}</div>
+            </div>
+            <div class="form-group row">
+                <div class="col-sm-2 col-form-label">
+                    {{ form_label(contactForm.subject) }}
+                </div>
+                <div class="col-sm-4">
+                    {{ form_widget(contactForm.subject) }}
+                </div>
+                <div class="col-sm-2">{{ form_errors(contactForm.subject) }}</div>
+            </div>
+            <div class="form-group row">
+                <div class="col-sm-2 col-form-label">
+                    {{ form_label(contactForm.phone) }}
+                </div>
+                <div class="col-sm-4">
+                    {{ form_widget(contactForm.phone) }}
+                </div>
+                <div class="col-sm-2">{{ form_errors(contactForm.phone) }}</div>
+            </div>
+            <div class="form-group row">
+                <div class="col-sm-2 col-form-label">
+                    {{ form_label(contactForm.content) }}
+                </div>
+                <div class="col-sm-4">
+                    {{ form_widget(contactForm.content) }}
+                </div>
+                <div class="col-sm-2">{{ form_errors(contactForm.content) }}</div>
+            </div>
+            <div class="form-group row">
+                <button class="btn btn-primary">Изпрати съобщение</button>
+            </div>
+
+            {{ form_end(contactForm) }}
+        </div>
+    </div>
+
+
+{% endblock %}
+
+{% form_theme contactForm _self %}
+
+{# form_errors.html.twig #}
+{% block form_errors %}
+    {% spaceless %}
+        {% if errors|length > 0 %}
+            {% for error in errors %}
+                <div class="offset-sm-2">
+                    <div class="alert alert-danger" style="width: 500px;font-weight: bold" role="alert">
+                        {{ error.message }}</div>
+                </div>
+            {% endfor %}
+        {% endif %}
+    {% endspaceless %}
+{% endblock form_errors %}
+

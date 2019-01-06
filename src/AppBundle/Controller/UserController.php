@@ -26,14 +26,14 @@ class UserController extends Controller
         $form = $this->createForm(UserType::class, $user);
         $form->handleRequest($request);
 
-        if ($form->isSubmitted()) {
+        if ($form->isSubmitted() && $form->isValid()) {
 
             $newEmail = $form->getData()->getEmail();
-            $existingUser = $this->getDoctrine()->getRepository(User::class)->findOneBy(["email"=>$newEmail]);
+            $existingUser = $this->getDoctrine()->getRepository(User::class)->findOneBy(["email" => $newEmail]);
 
-            if($existingUser){
+            if ($existingUser) {
                 $this->addFlash("registerInfo", "User with this email already registered.");
-                return $this->render("user/register.html.twig", ["registerForm"=>$form->createView()]);
+                return $this->render("user/register.html.twig", ["registerForm" => $form->createView()]);
             }
 
             $password = $this->get("security.password_encoder")->encodePassword($user, $user->getPassword());
@@ -54,7 +54,7 @@ class UserController extends Controller
             return $this->redirect("/login");
         }
 
-        return $this->render('user/register.html.twig', ["registerForm"=>$form->createView()]);
+        return $this->render('user/register.html.twig', ["registerForm" => $form->createView()]);
     }
 
     /**
@@ -70,10 +70,31 @@ class UserController extends Controller
          */
         $loggedInUser = $this->getUser();
 
-        $user = $this->getDoctrine()->getRepository(User::class)->findOneBy(["email" => $loggedInUser->getEmail()]);
+        $form = $this->createForm(UserType::class, $loggedInUser);
+        $form->handleRequest($request);
 
-        return $this->render("user/profile.html.twig", ["user" => $user]);
+        if ($form->isSubmitted() && $form->isValid()) {
+
+            $newEmail = $form->getData()->getEmail();
+            $existingUser = $this->getDoctrine()->getRepository(User::class)->findOneBy(["email" => $newEmail]);
+
+            if ($existingUser && $existingUser !== $loggedInUser) {
+                $this->addFlash("registerInfo", "User with this email already registered.");
+                return $this->render("user/profile.html.twig", ["registerForm" => $form->createView()]);
+            }
+
+            $password = $this->get("security.password_encoder")->encodePassword($loggedInUser, $loggedInUser->getPassword());
+            $loggedInUser->setPassword($password);
+
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($loggedInUser);
+            $em->flush();
+
+            return $this->redirectToRoute("homepage");
+        }
+
+        return $this->render("user/profile.html.twig", ["user" => $loggedInUser, "registerForm" => $form->createView()]);
+
     }
-
 
 }

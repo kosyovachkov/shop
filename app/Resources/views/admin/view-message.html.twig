@@ -1,0 +1,26 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+<hr>
+<h2>Съобщение</h2>
+<hr>
+<div class="card" style="width: 50rem;">
+    <ul class="list-group list-group-flush">
+        <li class="list-group-item"><span style="font-weight: bold; text-decoration: underline">Тема на съобщението: </span>{{ message.subject }}</li>
+        <li class="list-group-item"><span style="font-weight: bold; text-decoration: underline">Email: </span>{{ message.email }}</li>
+        <li class="list-group-item"><span style="font-weight: bold; text-decoration: underline">Телефонен номер: </span>{{ message.phone }}</li>
+        <li class="list-group-item"><span style="font-weight: bold; text-decoration: underline">Дата на изпращане: </span>{{ message.formatedDate }}
+        <li class="list-group-item"><span style="font-weight: bold; text-decoration: underline">Съобщение: </span>{{ message.content }}
+        <li class="list-group-item">
+            <a href="{{ path('delete_message', {"id":message.id}) }}">
+                <button type="button" class="btn btn-danger btn-xs">Изтрий съобщението</button>
+            </a>
+        </li>
+    </ul>
+</div>
+{% endblock %}
+
+{% block form_errors %}
+
+{% endblock %}
+
