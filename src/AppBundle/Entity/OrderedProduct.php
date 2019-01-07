@@ -193,7 +193,7 @@ class OrderedProduct
     /**
      * @param UserOrder $userOrder
      */
-    public function setUserOrder(UserOrder $userOrder): void
+    public function setUserOrder(UserOrder $userOrder)
     {
         $this->userOrder = $userOrder;
     }

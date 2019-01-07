@@ -118,22 +118,29 @@
     </header>
 {% endblock %}
 
-<a href="{{ path('homepage') }}">
+{% block headBackground %}
 
-    <div class="row">
-        <div class="col-12">
-            <img src="{{ asset('images/backgrounds/spearfishing2.jpg') }}" alt="test" class="img-responsive">
-            <div class="carousel-caption">
-                <h1 style="text-align: center; color: blue; font-weight: bold">Le Grand Blue</h1>
-                <h2 style="text-align: center; color: deeppink">Магазин за подводен риболов и свободно гмуркане</h2>
-                <div class="container">
-                    {% block jumboo %} {% endblock %}
+    <a href="{{ path('homepage') }}">
+
+        <div class="row">
+            <div class="col-12">
+                <img src="{{ asset('images/backgrounds/smallback.jpg') }}" alt="test" class="img-responsive">
+                <div class="carousel-caption">
+                    <h1 style="text-align: center; color: white; font-weight: bold">Le Grand Blue</h1>
+                    <h2 style="text-align: center; color: white">Магазин за подводен риболов и свободно гмуркане</h2>
+
                 </div>
             </div>
         </div>
-    </div>
+    </a>
 
-</a>
+{% endblock %}
+
+<div class="container">
+    {% block jumboo %} {% endblock %}
+</div>
+
+
 <hr class="container" style="border: 1px solid deepskyblue;">
 <div class="container">
     {% block body %}

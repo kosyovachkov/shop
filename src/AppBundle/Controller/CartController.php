@@ -151,6 +151,7 @@ class CartController extends Controller
         }
 
         $products = [];
+
         foreach ($user->getCart()->getOrderedProducts() as $product) {
             if (!$product->getUserOrder()) {
                 $products[] = $product;
@@ -184,16 +185,13 @@ class CartController extends Controller
 
         $order = new UserOrder();
         $order->setUser($user);
+
         foreach ($productsInCart as $product) {
             if (!$product->getUserOrder()) {
                 $product->setUserOrder($order);
                 $order->addProduct($product);
             }
         }
-
-        /* foreach ($productsInCart as $product) {
-             $product->setIsActive(false);
-         }*/
 
         $userCart->dropProducts();
 

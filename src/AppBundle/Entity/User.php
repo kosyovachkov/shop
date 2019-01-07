@@ -85,6 +85,19 @@ class User implements UserInterface
     private $address;
 
     /**
+     * @var string
+     *
+     * @ORM\Column(name="phone", type="string", length=255)
+     *
+     * @Assert\NotBlank()
+     * @Assert\Regex(
+     *     pattern="/^[\d]{10}$/",
+     *     message="Номерът трябва да се състои от 10 цифри."
+     * )
+     */
+    private $phone;
+
+    /**
      * @var ArrayCollection
      * @ORM\ManyToMany(targetEntity="Role", inversedBy="users")
      * @ORM\JoinTable(name="users_roles")
@@ -243,6 +256,24 @@ class User implements UserInterface
     {
         return $this->address;
     }
+
+    /**
+     * @return string
+     */
+    public function getPhone()
+    {
+        return $this->phone;
+    }
+
+    /**
+     * @param string $phone
+     */
+    public function setPhone($phone)
+    {
+        $this->phone = $phone;
+    }
+
+
 
     /**
      * @return Cart

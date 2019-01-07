@@ -32,7 +32,7 @@ class UserController extends Controller
             $existingUser = $this->getDoctrine()->getRepository(User::class)->findOneBy(["email" => $newEmail]);
 
             if ($existingUser) {
-                $this->addFlash("registerInfo", "User with this email already registered.");
+                $this->addFlash("registerInfo", "Има регистриран потребител с този email.");
                 return $this->render("user/register.html.twig", ["registerForm" => $form->createView()]);
             }
 
@@ -79,7 +79,7 @@ class UserController extends Controller
             $existingUser = $this->getDoctrine()->getRepository(User::class)->findOneBy(["email" => $newEmail]);
 
             if ($existingUser && $existingUser !== $loggedInUser) {
-                $this->addFlash("registerInfo", "User with this email already registered.");
+                $this->addFlash("registerInfo", "Има регистриран потребител с този email.");
                 return $this->render("user/profile.html.twig", ["registerForm" => $form->createView()]);
             }
 

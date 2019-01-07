@@ -22,10 +22,12 @@ class HomeController extends Controller
     {
 
         $products = $this->getDoctrine()->getRepository(Product::class)->getLastThreeProducts();
+        $featuredProducts = $this->getDoctrine()->getRepository(Product::class)->findBy(["featured"=>true], ["id"=>"DESC"], 3);
+
 
         /*$this->get("twig")->addGlobal("count", count($products));*/
         // replace this example code with whatever you need
-        return $this->render('default/index.html.twig', ["products" => $products]);
+        return $this->render('default/index.html.twig', ["products" => $products, "featured"=>$featuredProducts]);
     }
 
     /**

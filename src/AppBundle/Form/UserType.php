@@ -55,7 +55,12 @@ class UserType extends AbstractType
                     "style" => "width:500px; height:150px",
                     "class" => "form-control"
                 ]
-            ]);
+            ])
+            ->add('phone', TextType::class, [
+                "label"=>"Телефон",
+                "attr"=>[
+                    "class"=>"form-control"
+                ]]);
     }
 
     /**

@@ -5,6 +5,7 @@ namespace AppBundle\Entity;
 use Doctrine\DBAL\Types\BooleanType;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints\Date;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * Message
@@ -27,6 +28,9 @@ class Message
      * @var string
      *
      * @ORM\Column(name="email", type="string", length=255)
+     *
+     * @Assert\NotBlank(message="И-мейлът е задължителен.")
+     * @Assert\Email(message="Невалиден email.")
      */
     private $email;
 
@@ -34,6 +38,8 @@ class Message
      * @var string
      *
      * @ORM\Column(name="subject", type="string", length=255)
+     *
+     * @Assert\NotBlank()
      */
     private $subject;
 
@@ -41,6 +47,12 @@ class Message
      * @var string
      *
      * @ORM\Column(name="phone", type="string", length=255)
+     *
+     * @Assert\NotBlank()
+     * @Assert\Regex(
+     *     pattern="/^[\d]{10}$/",
+     *     message="Номерът трябва да се състои от 10 цифри."
+     * )
      */
     private $phone;
 
@@ -48,6 +60,8 @@ class Message
      * @var string
      *
      * @ORM\Column(name="content", type="text")
+     *
+     * @Assert\NotBlank()
      */
     private $content;
 

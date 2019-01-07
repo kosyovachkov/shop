@@ -117,6 +117,7 @@ class Cart
     }
 
     public function dropProducts(){
+
         $this->orderedProducts=[];
     }
 
