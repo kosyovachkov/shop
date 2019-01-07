@@ -28,7 +28,7 @@ class CategoryController extends Controller
      */
     public function getAllProductsFromCategory(Request $request, int $id){
 
-        $products = $this->getDoctrine()->getRepository(Product::class)->findBy(["category"=>$id]);
+        $products = $this->getDoctrine()->getRepository(Product::class)->getAllProductsFromCategory($id);
         $category = $this->getDoctrine()->getRepository(Category::class)->findOneBy(["id"=>$id]);
 
         $paginator  = $this->get('knp_paginator');
@@ -38,6 +38,6 @@ class CategoryController extends Controller
             6/*limit per page*/
         );
 
-        return $this->render('category/all.html.twig', ["pagination"=>$pagination, "category"=>$category]);
+        return $this->render('category/all-products-from-category.html.twig', ["pagination"=>$pagination, "category"=>$category]);
     }
 }

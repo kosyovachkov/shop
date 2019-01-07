@@ -11,6 +11,11 @@
     <h3>{{ category.name }}</h3>
         <hr>
     <div class="row">
+
+        {% if pagination.count < 1 %}
+            <h4>- Няма добавени продукти в категорията -</h4>
+        {% endif %}
+
         {% for product in pagination %}
             <div class="col-md-4">
                 <div class="card mb-4 shadow-sm">
@@ -27,12 +32,20 @@
                     </div>
                     <div class="card-footer">
                         <div class="btn-group">
-                            <a href="{{ path('view_product', {"id":product.id}) }}">
-                                <button type="button" class="btn btn-md btn-outline-info">Разгледай</button>
-                            </a>
+                            {% if app.user %}
+                                <a href="{{ path('add_product_to_cart', {"id":product.id}) }}">
+                                    <button type="button" class="btn btn-md btn-outline-info">Разгледай</button>
+                                </a>
+                            {% else %}
+                                <a href="{{ path('view_product', {"id":product.id}) }}">
+                                    <button type="button" class="btn btn-md btn-outline-info">Разгледай</button>
+                                </a>
+
+                            {% endif %}
 
                             <a href="{{ path('add_to_cart', {"id":product.id}) }}">
-                                <button type="button" class="btn btn-md btn-outline-danger">Добави в количката</button>
+                                <button type="button" class="btn btn-md btn-outline-danger">Добави в количката
+                                </button>
                             </a>
 
                         </div>

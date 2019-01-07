@@ -78,10 +78,11 @@ class CartController extends Controller
      * @return \Symfony\Component\HttpFoundation\Response
      * @Route("/product/add/{id}", name="add_product_to_cart")
      */
-    public function addToCart(Request $request, int $id){
+    public function addToCart(Request $request, int $id)
+    {
         $user = $this->getUser();
 
-        if($user==null){
+        if ($user == null) {
             return $this->redirectToRoute("login");
         }
 
@@ -89,24 +90,32 @@ class CartController extends Controller
         $product = $this->getDoctrine()->getRepository(Product::class)->findOneBy(["id" => $id]);
 
         $newOrderedProduct = $userCart->getCurrentProduct($product->getId());
+        $oldQuantity = 0;
+        if($newOrderedProduct){
+            $oldQuantity = $newOrderedProduct->getQuantity();
+        }
 
         $form = $this->createFormBuilder($newOrderedProduct)
-            ->add("quantity", NumberType::class)
+            ->add("quantity", NumberType::class, [
+                "label" => "Желано количество",
+                "attr" => [
+                    "class" => "form-control"
+                ]
+            ])
             ->getForm();
         $form->handleRequest($request);
 
+        if ($form->isSubmitted()) {
 
-        if($form->isSubmitted()){
-
-            if($newOrderedProduct==null){
+            if (!$newOrderedProduct) {
                 $newOrderedProduct = new OrderedProduct();
                 $newOrderedProduct->setName($product->getName());
                 $newOrderedProduct->setQuantity($form["quantity"]->getData());
                 $newOrderedProduct->setPrice($product->getPrice());
                 $newOrderedProduct->setProductId($id);
                 $newOrderedProduct->addCart($userCart);
-            }else{
-                $newOrderedProduct->setQuantity($newOrderedProduct->getQuantity()+$form["quantity"]->getData());
+            } else {
+                $newOrderedProduct->setQuantity($oldQuantity + $form["quantity"]->getData());
             }
             $userCart->addOrderedProduct($newOrderedProduct);
 
@@ -121,7 +130,7 @@ class CartController extends Controller
             return $this->redirectToRoute("view_cart");
         }
 
-        return $this->render("product/product.html.twig", ["product"=>$product, "form"=>$form->createView()]);
+        return $this->render("product/product.html.twig", ["product" => $product, "form" => $form->createView()]);
 
     }
 

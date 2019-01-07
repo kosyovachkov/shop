@@ -2,6 +2,7 @@
 
 namespace AppBundle\Entity;
 
+use Doctrine\DBAL\Types\BooleanType;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints\Date;
 
@@ -57,10 +58,17 @@ class Message
      */
     private $dateAdded;
 
+    /**
+     * @var BooleanType
+     * @ORM\Column(name="is_new", type="boolean")
+     */
+    private $isNew;
+
 
     public function __construct()
     {
         $this->dateAdded = new \DateTime("now");
+        $this->isNew = true;
     }
 
 
@@ -186,6 +194,31 @@ class Message
     {
         $date = $this->getDateAdded();
         return date_format($date, 'Y-m-d H:i:s');
+    }
+
+
+    public function getisNew()
+    {
+        return $this->isNew;
+    }
+
+
+    public function setIsNew($isNew)
+    {
+        $this->isNew = $isNew;
+    }
+
+
+    public function getShortSubject()
+    {
+        $ful = $this->getSubject();
+        $intro = $ful;
+        if (strlen($ful) > 50) {
+
+            $intro = substr($ful, 0, 50);
+            $intro = $intro . "...";
+        }
+        return $intro;
     }
 }
 

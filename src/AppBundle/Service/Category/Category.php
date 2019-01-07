@@ -24,7 +24,7 @@ class Category implements CategoryInterface
 
     public function getAllCategories()
     {
-        $categories = $this->categoryRepository->findAll();
+        $categories = $this->categoryRepository->findBy([], ["id"=>"ASC"]);
         return $categories;
     }
 }

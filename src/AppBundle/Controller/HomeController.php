@@ -50,7 +50,8 @@ class HomeController extends Controller
             return $this->redirectToRoute("contact_form");
         }
 
-        return $this->render("contact/contact.html.twig", ["contactForm"=>$form->createView()]);
+        return $this->render("contact/contact.html.twig", ["contactForm" => $form->createView()]);
 
     }
+
 }

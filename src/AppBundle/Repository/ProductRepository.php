@@ -32,4 +32,17 @@ class ProductRepository extends \Doctrine\ORM\EntityRepository
             ->getResult();
 
     }
+
+    public function getAllProductsFromCategory($id)
+    {
+        return $this->createQueryBuilder("p")
+            ->join("p.category", 'c')
+            ->where("p.quantity > :minQuantity")
+            ->where('c.id=:catId')
+            ->orderBy("p.id", "DESC")
+            ->setParameter("catId", $id)
+            ->getQuery()
+            ->getResult();
+
+    }
 }

@@ -23,17 +23,31 @@
         <tbody>
 
         {% for message in messages %}
+            {% if message.getIsNew() %}
             <tr>
-                <th scope="row">{{ loop.index }}</th>
-                <td>{{ message.subject}}</td>
-                <td>{{ message.email }}</td>
-                <td>{{ message.getFormatedDate() }}</td>
+                <th scope="row" style="font-weight: bold;color: #74cae3">{{ loop.index }}</th>
+                <td style="font-weight: bold;color: #74cae3">{{ message.getShortSubject()}}</td>
+                <td style="font-weight: bold;color: #74cae3">{{ message.email }}</td>
+                <td style="font-weight: bold;color: #74cae3">{{ message.getFormatedDate() }}</td>
                 <td align="right">
                     <a href="{{ path('view_one_message', {"id":message.id}) }}">
                         <button type="button" class="btn btn-info btn-xs">Виж цялото съобщение</button>
                     </a>
                 </td>
             </tr>
+            {% else %}
+                <tr>
+                    <th scope="row" >{{ loop.index }}</th>
+                    <td >{{ message.getShortSubject()}}</td>
+                    <td >{{ message.email }}</td>
+                    <td >{{ message.getFormatedDate() }}</td>
+                    <td align="right">
+                        <a href="{{ path('view_one_message', {"id":message.id}) }}">
+                            <button type="button" class="btn btn-info btn-xs">Виж цялото съобщение</button>
+                        </a>
+                    </td>
+                </tr>
+            {% endif %}
         {% endfor %}
 
         </tbody>

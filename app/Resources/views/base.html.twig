@@ -9,6 +9,7 @@
     <meta charset="UTF-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1"/>
     <title>{% block title %}Магазин за подводен риболов "Le Grand Blue"{% endblock %}</title>
+
     {% block stylesheets %}
         <link rel="stylesheet" href="{{ asset('css/bootstrap.css') }}">
         <link rel="stylesheet" href="{{ asset('css/bootstrap-grid.css') }}">
@@ -16,27 +17,24 @@
         <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css"
               integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/"
               crossorigin="anonymous">
-
-
     {% endblock %}
+
     <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}"/>
     <script>
         setTimeout(function () {
             $("#infomsg").fadeOut();
-        }, 2000);
+        }, 2500);
     </script>
 </head>
 
-
-
 {% block header %}
     <header>
-        <div class="navbar navbar-dark bg-primary" role="navigation">
+        <nav class="navbar fixed-top navbar-dark bg-primary" role="navigation">
             <div class="container">
 
                 <div class="navbar-header">
                     <a href="{{ path('homepage') }}" class="navbar-brand">
-                        Начало
+                        Le Grand Blue
                     </a>
                     <span class="dropdown">
                             <a class="navbar-brand dropdown-toggle" href="#" id="dropdownMenuLink"
@@ -64,8 +62,7 @@
                         </div>
                         <span> <a href="{{ path('view_cart') }}">
                                     Количка
-                                </a><i class="fas fa-cart-arrow-down"></i> ({{ cart_products.numberOfProductsInCart() }}
-                            ) |
+                                </a><i class="fas fa-cart-arrow-down"></i> ({{ cart_products.numberOfProductsInCart() }}) |
                     </span>
 
                         {% for role in app.user.roles if role == 'ROLE_ADMIN' %}
@@ -117,7 +114,7 @@
                 </div>
             </div>
 
-        </div>
+        </nav>
     </header>
 {% endblock %}
 
@@ -127,8 +124,8 @@
         <div class="col-12">
             <img src="{{ asset('images/backgrounds/spearfishing2.jpg') }}" alt="test" class="img-responsive">
             <div class="carousel-caption">
-                <h1 style="text-align: center">Le Grand Blue</h1>
-                <h2 style="text-align: center">Магазин за подводен риболов и свободно гмуркане</h2>
+                <h1 style="text-align: center; color: blue; font-weight: bold">Le Grand Blue</h1>
+                <h2 style="text-align: center; color: deeppink">Магазин за подводен риболов и свободно гмуркане</h2>
                 <div class="container">
                     {% block jumboo %} {% endblock %}
                 </div>
@@ -161,7 +158,7 @@
             <h4>Продукти</h4>
             <hr>
             <p><a href="{{ path('homepage') }}">Последно добавени</a></p>
-            <p><a href="{{ path('orders_all') }}">Най-купувани</a></p>
+            <p><a href="{{ path('orders_all') }}">Препоръчано от нас</a></p>
 
         </div>
         <div class="col-4 rounded border border-primary" style="padding: 30px;">

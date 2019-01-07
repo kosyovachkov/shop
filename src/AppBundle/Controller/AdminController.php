@@ -288,6 +288,8 @@ class AdminController extends Controller
         if ($user->isAdmin()) {
             $product = new Product();
 
+            $image = "no-image.jpg";
+
             $form = $this->createForm(ProductType::class, $product);
             $form->handleRequest($request);
 
@@ -296,15 +298,20 @@ class AdminController extends Controller
                  * @var UploadedFile $file
                  */
                 $file = $product->getImage();
-                $fileName = md5(uniqid()) . "." . $file->guessExtension();
 
-                try {
-                    $file->move($this->getParameter("product_directory"), $fileName);
-                } catch (FileException $ex) {
+                if ($file === "noSelectedImage") {
+                    $product->setImage($image);
+                } else {
+                    $fileName = md5(uniqid()) . "." . $file->guessExtension();
 
+                    try {
+                        $file->move($this->getParameter("product_directory"), $fileName);
+                    } catch (FileException $ex) {
+
+                    }
+
+                    $product->setImage($fileName);
                 }
-
-                $product->setImage($fileName);
 
                 $catId = $form["category"]->getData()->getId();
 
@@ -349,9 +356,9 @@ class AdminController extends Controller
                 /**
                  * @var UploadedFile $file
                  */
-                $file = $product->getImage();
+                $file = $form->getData()->getImage();
 
-                if ($file == null) {
+                if ($file === "noSelectedImage") {
                     $product->setImage($image);
                 } else {
                     $fileName = md5(uniqid()) . "." . $file->guessExtension();
@@ -434,7 +441,7 @@ class AdminController extends Controller
         $currentUser = $this->getUser();
 
         if ($currentUser->isAdmin()) {
-            $categories = $this->getDoctrine()->getRepository(Category::class)->findAll();
+            $categories = $this->getDoctrine()->getRepository(Category::class)->findBy([], ["id"=>"ASC"]);
 
             return $this->render("admin/show-categories.html.twig", ["categories" => $categories]);
         }
@@ -488,6 +495,12 @@ class AdminController extends Controller
         if ($currentUser->isAdmin()) {
 
             $message = $this->getDoctrine()->getRepository(Message::class)->find($id);
+
+            $message->setIsNew(false);
+
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($message);
+            $em->flush();
 
             return $this->render("admin/view-message.html.twig", ["message"=>$message]);
         }
