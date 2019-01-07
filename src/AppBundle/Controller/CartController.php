@@ -91,7 +91,7 @@ class CartController extends Controller
 
         $newOrderedProduct = $userCart->getCurrentProduct($product->getId());
         $oldQuantity = 0;
-        if($newOrderedProduct){
+        if ($newOrderedProduct) {
             $oldQuantity = $newOrderedProduct->getQuantity();
         }
 
@@ -160,7 +160,9 @@ class CartController extends Controller
 
         $total = $user->getCart()->getTotal();
 
-        return $this->render("cart/view.html.twig", ["products" => $products, "total" => $total]);
+        $wallet = $user->getWallet();
+
+        return $this->render("cart/view.html.twig", ["products" => $products, "total" => $total, "wallet" => $wallet]);
     }
 
     /**
@@ -182,8 +184,16 @@ class CartController extends Controller
 
         $userCart = $user->getCart();
         $productsInCart = $userCart->getOrderedProducts();
+        $total = $userCart->getTotal();
+        $wallet = $user->getWallet();
+
+        if ($total > $wallet) {
+            $this->addFlash("noMoneyInfo", "Нямате достатъчна наличност за да извършите покупката.");
+            return $this->redirectToRoute("order_products");
+        }
 
         $order = new UserOrder();
+
         $order->setUser($user);
 
         foreach ($productsInCart as $product) {
@@ -192,6 +202,8 @@ class CartController extends Controller
                 $order->addProduct($product);
             }
         }
+
+        $user->setWallet($user->getWallet() - $total);
 
         $userCart->dropProducts();
 

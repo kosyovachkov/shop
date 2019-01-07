@@ -3,6 +3,7 @@
 namespace AppBundle\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\DBAL\Types\DecimalType;
 use Doctrine\ORM\Mapping as ORM;
 
 use Symfony\Component\Security\Core\User\UserInterface;
@@ -118,12 +119,19 @@ class User implements UserInterface
     private $orders;
 
     /**
+     * @var DecimalType
+     * @ORM\Column(name="wallet", type="decimal", precision=10, scale=2, nullable=true)
+     */
+    private $wallet;
+
+    /**
      * User constructor.
      */
     public function __construct()
     {
         $this->roles = new ArrayCollection();
         $this->orders = new ArrayCollection();
+        $this->wallet = 2000;
     }
 
 
@@ -271,6 +279,18 @@ class User implements UserInterface
     public function setPhone($phone)
     {
         $this->phone = $phone;
+    }
+
+
+    public function getWallet()
+    {
+        return $this->wallet;
+    }
+
+
+    public function setWallet($wallet)
+    {
+        $this->wallet = $wallet;
     }
 
 
