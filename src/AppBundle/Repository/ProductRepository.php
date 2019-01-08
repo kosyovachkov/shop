@@ -46,12 +46,22 @@ class ProductRepository extends \Doctrine\ORM\EntityRepository
 
     }
 
-    public function getPromoAllProducts()
+    public function getPromoThreeProducts()
     {
         return $this->createQueryBuilder("p")
             ->where("p.promoPrice IS NOT NULL")
             ->orderBy("p.id", "DESC")
             ->setMaxResults(3)
+            ->getQuery()
+            ->getResult();
+
+    }
+
+    public function getPromoAllProducts()
+    {
+        return $this->createQueryBuilder("p")
+            ->where("p.promoPrice IS NOT NULL")
+            ->orderBy("p.id", "DESC")
             ->getQuery()
             ->getResult();
 

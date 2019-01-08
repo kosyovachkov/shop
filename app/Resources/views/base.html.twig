@@ -50,6 +50,9 @@
                                 {% endfor %}
                             </span>
                         </span>
+                    <a href="{{ path('promo_products') }}" class="navbar-brand" style="color: deepskyblue">
+                        Промоции
+                    </a>
                     <a href="{{ path('contact_form') }}" class="navbar-brand">
                         Контакти
                     </a>
@@ -164,8 +167,9 @@
         <div class="col-4 rounded border border-primary" style="padding: 30px;">
             <h4>Продукти</h4>
             <hr>
-            <p><a href="{{ path('homepage') }}">Последно добавени</a></p>
-            <p><a href="{{ path('orders_all') }}">Препоръчано от нас</a></p>
+            <p><a href="{{ path('promo_products') }}">Продукти в промоция</a></p>
+            <p><a href="{{ path('featured_products') }}">Препоръчано от нас</a></p>
+            <p><a href="{{ path('all_products') }}">Всички продукти</a></p>
 
         </div>
         <div class="col-4 rounded border border-primary" style="padding: 30px;">

@@ -18,8 +18,8 @@
             {% if product.promoPrice %}
                 <h3> <span style="text-decoration: line-through">
             Цена: {{ product.price }} лв.</span>
-                    <h3> <span class="badge badge-secondary">
-            Цена: {{ product.price }} лв.</span>
+                    <h3> <span style="font-weight:bold; color: red">
+            Цена: {{ product.promoPrice }} лв.</span>
                     <span class="small">Налични: {{ product.quantity }} броя.</span>
                 </h3>
             {% else %}
@@ -68,14 +68,12 @@
         </div>
             {% else %}
                 <div class="col-4">
-                    <h4>
-                        За да закупите продукта трябва да сте регистриран потребител.
-                    </h4>
+                    <div class="alert alert-danger" role="alert" style="font-size: 1.3em">
+                        За да закупите продукта трябва да влезете в системата като регистриран потребител.
+                    </div>
                 </div>
         {% endif %}
     </div>
-
-
 
     {% if app.user is not null %}
         {% for role in app.user.roles if role == 'ROLE_ADMIN' %}
@@ -117,11 +115,5 @@
         </div>
     {% endif %}
     </div>
-
-
-
-
-
-
 
 {% endblock %}

@@ -46,13 +46,19 @@ class CartController extends Controller
         $userCart = $user->getCart();
         $product = $this->getDoctrine()->getRepository(Product::class)->findOneBy(["id" => $id]);
 
+        $productPrice = $product->getPrice();
+
+        if ($product->getPromoPrice()) {
+            $productPrice = $product->getPromoPrice();
+        }
+
         $newProduct = $userCart->getCurrentProduct($product->getId());
 
         if ($newProduct === null) {
             $newProduct = new OrderedProduct();
             $newProduct->setName($product->getName());
             $newProduct->setQuantity(1);
-            $newProduct->setPrice($product->getPrice());
+            $newProduct->setPrice($productPrice);
             $newProduct->setProductId($id);
             $newProduct->addCart($userCart);
         } else {
@@ -89,6 +95,12 @@ class CartController extends Controller
         $userCart = $user->getCart();
         $product = $this->getDoctrine()->getRepository(Product::class)->findOneBy(["id" => $id]);
 
+        $productPrice = $product->getPrice();
+
+        if ($product->getPromoPrice()) {
+            $productPrice = $product->getPromoPrice();
+        }
+
         $newOrderedProduct = $userCart->getCurrentProduct($product->getId());
         $oldQuantity = 0;
         if ($newOrderedProduct) {
@@ -111,7 +123,7 @@ class CartController extends Controller
                 $newOrderedProduct = new OrderedProduct();
                 $newOrderedProduct->setName($product->getName());
                 $newOrderedProduct->setQuantity($form["quantity"]->getData());
-                $newOrderedProduct->setPrice($product->getPrice());
+                $newOrderedProduct->setPrice($productPrice);
                 $newOrderedProduct->setProductId($id);
                 $newOrderedProduct->addCart($userCart);
             } else {

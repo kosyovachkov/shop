@@ -1,22 +1,17 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
+    <hr>
+    <h3>Препоръчани продукти</h3>
+    <hr>
     {% for msg in app.session.flashBag.get("info") %}
         <div class="alert alert-danger">
             <h3>{{ msg }}</h3>
         </div>
     {% endfor %}
-    <div class="container">
-        <hr>
-    <h3>{{ category.name }}</h3>
-        <hr>
+
     <div class="row">
-
-        {% if pagination.count < 1 %}
-            <h4>- Няма добавени продукти в категорията -</h4>
-        {% endif %}
-
-        {% for product in pagination %}
+        {% for product in featuredProducts %}
             <div class="col-md-4">
                 <div class="card mb-4 shadow-sm">
                     <a href="{{ path('view_product', {"id":product.id}) }}">
@@ -25,13 +20,13 @@
                              alt="Card image cap">
                     </a>
                     <div class="card-body">
-                        <h5 class="card-title">{{ product.name }}</span></h5>
+                        <h5 class="card-title">{{ product.name }} <span class="badge badge-success">Ново!</span></h5>
                         {% if product.promoPrice %}
                             <h5 class="card-title" style="color:deepskyblue; text-decoration: line-through">{{ product.price }} лв.</h5>
                             <h5 class="card-title" style="color: red; font-weight: bold">{{ product.promoPrice }}
                                 лв.</h5>
                         {% else %}
-                            <h5 class="card-title" style="color: deepskyblue; font-weight: bold">{{ product.price }} лв.</h5>
+                            <h5 class="card-title" style="color: red; font-weight: bold">{{ product.price }} лв.</h5>
 
                         {% endif %}
                         <p class="card-text">{{ product.introText }}...<br>>> <a
@@ -61,13 +56,17 @@
             </div>
         {% endfor %}
     </div>
+    <hr style="margin-bottom: 30px">
 
     {# display navigation #}
 
     <div class="navigation text-center">
-        {{ knp_pagination_render(pagination) }}
-    </div>
-
+        {{ knp_pagination_render(featuredProducts) }}
     </div>
 
 {% endblock %}
+
+{% block form_errors %}
+
+{% endblock %}
+
