@@ -62,7 +62,7 @@
 
 {% block body %}
     <hr>
-    <h3>Последно добавени продукти в магазина</h3>
+    <h3>Продукти в промоция</h3>
     <hr>
     {% for msg in app.session.flashBag.get("info") %}
         <div class="alert alert-danger">
@@ -71,7 +71,7 @@
     {% endfor %}
 
     <div class="row">
-        {% for product in products %}
+        {% for product in promo %}
             <div class="col-md-4">
                 <div class="card mb-4 shadow-sm">
                     <a href="{{ path('view_product', {"id":product.id}) }}">
@@ -81,7 +81,14 @@
                     </a>
                     <div class="card-body">
                         <h5 class="card-title">{{ product.name }} <span class="badge badge-success">Ново!</span></h5>
-                        <h5 class="card-title" style="color: red; font-weight: bold">{{ product.price }} лв.</h5>
+                        {% if product.promoPrice %}
+                            <h5 class="card-title" style="text-decoration: line-through">{{ product.price }} лв.</h5>
+                            <h5 class="card-title" style="color: red; font-weight: bold">{{ product.promoPrice }}
+                                лв.</h5>
+                        {% else %}
+                            <h5 class="card-title" style="color: red; font-weight: bold">{{ product.price }} лв.</h5>
+
+                        {% endif %}
                         <p class="card-text">{{ product.introText }}...<br>>> <a
                                     href="{{ path('view_product', {"id":product.id}) }}">Виж цялото описание</a> <<</p>
                     </div>
@@ -147,6 +154,62 @@
             </div>
         </div>
 
-
     {% endblock %}
+
+    <hr>
+    <h3>Последно добавени продукти</h3>
+    <hr>
+    {% for msg in app.session.flashBag.get("info") %}
+        <div class="alert alert-danger">
+            <h3>{{ msg }}</h3>
+        </div>
+    {% endfor %}
+
+    <div class="row">
+        {% for product in products %}
+            <div class="col-md-4">
+                <div class="card mb-4 shadow-sm">
+                    <a href="{{ path('view_product', {"id":product.id}) }}">
+                        <img class="card-img-top" src="{{ asset('uploads/images/' ~ product.image) }}" width="229"
+                             height="260"
+                             alt="Card image cap">
+                    </a>
+                    <div class="card-body">
+                        <h5 class="card-title">{{ product.name }} <span class="badge badge-success">Ново!</span></h5>
+                        {% if product.promoPrice %}
+                            <h5 class="card-title" style="text-decoration: line-through">{{ product.price }} лв.</h5>
+                            <h5 class="card-title" style="color: red; font-weight: bold">{{ product.promoPrice }}
+                                лв.</h5>
+                        {% else %}
+                            <h5 class="card-title" style="color: red; font-weight: bold">{{ product.price }} лв.</h5>
+
+                        {% endif %}
+                        <p class="card-text">{{ product.introText }}...<br>>> <a
+                                    href="{{ path('view_product', {"id":product.id}) }}">Виж цялото описание</a> <<</p>
+                    </div>
+                    <div class="card-footer">
+                        <div class="btn-group">
+                            {% if app.user %}
+                                <a href="{{ path('add_product_to_cart', {"id":product.id}) }}">
+                                    <button type="button" class="btn btn-md btn-outline-info">Разгледай</button>
+                                </a>
+                            {% else %}
+                                <a href="{{ path('view_product', {"id":product.id}) }}">
+                                    <button type="button" class="btn btn-md btn-outline-info">Разгледай</button>
+                                </a>
+
+                            {% endif %}
+
+                            <a href="{{ path('add_to_cart', {"id":product.id}) }}">
+                                <button type="button" class="btn btn-md btn-outline-danger">Добави в количката
+                                </button>
+                            </a>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+    <hr style="margin-bottom: 30px">
 {% endblock %}

@@ -9,6 +9,7 @@ use AppBundle\Service\Category\CategoryInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Validator\Constraints\NotNull;
 
 class HomeController extends Controller
 {
@@ -23,11 +24,12 @@ class HomeController extends Controller
 
         $products = $this->getDoctrine()->getRepository(Product::class)->getLastThreeProducts();
         $featuredProducts = $this->getDoctrine()->getRepository(Product::class)->findBy(["featured"=>true], ["id"=>"DESC"], 3);
+        $promoProducts = $this->getDoctrine()->getRepository(Product::class)->getPromoAllProducts();
 
 
         /*$this->get("twig")->addGlobal("count", count($products));*/
         // replace this example code with whatever you need
-        return $this->render('default/index.html.twig', ["products" => $products, "featured"=>$featuredProducts]);
+        return $this->render('default/index.html.twig', ["products" => $products, "featured"=>$featuredProducts, "promo"=>$promoProducts]);
     }
 
     /**

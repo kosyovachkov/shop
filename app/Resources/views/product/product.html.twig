@@ -15,10 +15,20 @@
                 <img src="{{ asset('uploads/images/'~product.image) }}" width="600px">
             </div>
             <br>
-            <h3> <span class="badge badge-secondary">
+            {% if product.promoPrice %}
+                <h3> <span style="text-decoration: line-through">
             Цена: {{ product.price }} лв.</span>
-                <span class="small">Налични: {{ product.quantity }} броя.</span>
-            </h3>
+                    <h3> <span class="badge badge-secondary">
+            Цена: {{ product.price }} лв.</span>
+                    <span class="small">Налични: {{ product.quantity }} броя.</span>
+                </h3>
+            {% else %}
+                <h3> <span class="badge badge-secondary">
+            Цена: {{ product.price }} лв.</span>
+                    <span class="small">Налични: {{ product.quantity }} броя.</span>
+                </h3>
+            {% endif %}
+
             <div>
                 <p style="font-size: 1.2em">
                     {{ product.description }}
@@ -54,7 +64,7 @@
 
                     {{ form_end(form) }}</span></div>
 
-            <hr style="border: 1px solid darkolivegreen">
+            <hr style="border: 1px solid deepskyblue">
         </div>
             {% else %}
                 <div class="col-4">
