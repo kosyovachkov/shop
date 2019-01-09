@@ -38,9 +38,10 @@ class ProductRepository extends \Doctrine\ORM\EntityRepository
         return $this->createQueryBuilder("p")
             ->join("p.category", 'c')
             ->where("p.quantity > :minQuantity")
-            ->where('c.id=:catId')
+            ->andWhere('c.id=:catId')
             ->orderBy("p.id", "DESC")
             ->setParameter("catId", $id)
+            ->setParameter("minQuantity", 0)
             ->getQuery()
             ->getResult();
 
@@ -50,7 +51,9 @@ class ProductRepository extends \Doctrine\ORM\EntityRepository
     {
         return $this->createQueryBuilder("p")
             ->where("p.promoPrice IS NOT NULL")
+            ->andWhere("p.quantity > :minQuantity")
             ->orderBy("p.id", "DESC")
+            ->setParameter("minQuantity", 0)
             ->setMaxResults(3)
             ->getQuery()
             ->getResult();
@@ -61,7 +64,22 @@ class ProductRepository extends \Doctrine\ORM\EntityRepository
     {
         return $this->createQueryBuilder("p")
             ->where("p.promoPrice IS NOT NULL")
+            ->andWhere("p.quantity > :minQuantity")
             ->orderBy("p.id", "DESC")
+            ->setParameter("minQuantity", 0)
+            ->getQuery()
+            ->getResult();
+
+    }
+
+    public function getFeaturedThreeProducts()
+    {
+        return $this->createQueryBuilder("p")
+            ->where("p.featured = true")
+            ->andWhere("p.quantity > :minQuantity")
+            ->orderBy("p.id", "DESC")
+            ->setParameter("minQuantity", 0)
+            ->setMaxResults(3)
             ->getQuery()
             ->getResult();
 

@@ -39,7 +39,7 @@ class UserType extends AbstractType
             ->add('password', RepeatedType::class, [
                 "label" => "Парола",
                 'type' => PasswordType::class,
-                'invalid_message' => 'The password fields must match.',
+                'invalid_message' => 'Двете пароли трябва да съвпадат.',
                 'options' => [
                     'attr' => [
                         'class' => 'form-control password-field'

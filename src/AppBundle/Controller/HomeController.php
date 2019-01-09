@@ -21,7 +21,7 @@ class HomeController extends Controller
     public function indexAction(Request $request, CategoryInterface $category)
     {
         $products = $this->getDoctrine()->getRepository(Product::class)->getLastThreeProducts();
-        $featuredProducts = $this->getDoctrine()->getRepository(Product::class)->findBy(["featured"=>true], ["id"=>"DESC"], 3);
+        $featuredProducts = $this->getDoctrine()->getRepository(Product::class)->getFeaturedThreeProducts();
         $promoProducts = $this->getDoctrine()->getRepository(Product::class)->getPromoThreeProducts();
 
         /*$this->get("twig")->addGlobal("count", count($products));*/

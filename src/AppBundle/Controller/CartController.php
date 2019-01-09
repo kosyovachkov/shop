@@ -91,12 +91,14 @@ class CartController extends Controller
         $product = $this->getDoctrine()->getRepository(Product::class)->findOneBy(["id" => $id]);
 
         $productPrice = $product->getPrice();
+        $productQuantity = $product->getQuantity();
 
         if ($product->getPromoPrice()) {
             $productPrice = $product->getPromoPrice();
         }
 
         $newOrderedProduct = $userCart->getCurrentProduct($product->getId());
+
         $oldQuantity = 0;
         if ($newOrderedProduct) {
             $oldQuantity = $newOrderedProduct->getQuantity();
@@ -105,6 +107,7 @@ class CartController extends Controller
         $form = $this->createFormBuilder($newOrderedProduct)
             ->add("quantity", NumberType::class, [
                 "label" => "Желано количество",
+                "invalid_message"=>"Въведете число от 1 до 200",
                 "attr" => [
                     "class" => "form-control"
                 ]
@@ -112,7 +115,13 @@ class CartController extends Controller
             ->getForm();
         $form->handleRequest($request);
 
-        if ($form->isSubmitted()) {
+        if ($form->isSubmitted()&&$form->isValid()) {
+
+            if($productQuantity<$form["quantity"]->getData()){
+                $this->addFlash("quantityInfo", "Няма достатъчна наличност от продукта.");
+
+                return $this->render("product/product.html.twig", ["product" => $product, "form" => $form->createView()]);
+            }
 
             if (!$newOrderedProduct) {
                 $newOrderedProduct = new OrderedProduct();

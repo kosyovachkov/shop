@@ -9,6 +9,13 @@
         <h2>{{ product.name }}</h2>
     </header>
 
+    {% for msg in app.session.flashBag.get("quantityInfo") %}
+        <div id="infomsg" class="alert alert-danger">
+            <a href="#" class="close" data-dismiss="alert" aria-label="close">x</a>
+            {{ msg }}
+        </div>
+    {% endfor %}
+
     <div class="row">
         <div class="col-8">
             <div>
@@ -59,7 +66,7 @@
                     {{ form_start(form) }}
                     {{ form_label(form.quantity) }}
                     {{ form_widget(form.quantity, { 'value': '' }) }}
-
+                    {{ form_errors(form.quantity) }}
                     <button class="btn btn-info" style="text-transform: uppercase">Добави в количката</button>
 
                     {{ form_end(form) }}</span></div>
@@ -117,3 +124,19 @@
     </div>
 
 {% endblock %}
+
+{% form_theme form _self %}
+
+{# form_errors.html.twig #}
+{% block form_errors %}
+    {% spaceless %}
+        {% if errors|length > 0 %}
+            {% for error in errors %}
+                <div class="offset-sm-2">
+                    <div class="alert alert-danger" style="width: 500px;font-weight: bold" role="alert">
+                        {{ error.message }}</div>
+                </div>
+            {% endfor %}
+        {% endif %}
+    {% endspaceless %}
+{% endblock form_errors %}
