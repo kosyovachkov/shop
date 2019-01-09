@@ -33,8 +33,8 @@
             <div class="container">
 
                 <div class="navbar-header">
-                    <a href="{{ path('homepage') }}" class="navbar-brand">
-                        Le Grand Blue
+                    <a href="{{ path('homepage') }}" class="navbar-brand" style="color: deepskyblue;font-weight: bold">
+                        LE GRAND BLUE
                     </a>
                     <span class="dropdown">
                             <a class="navbar-brand dropdown-toggle" href="#" id="dropdownMenuLink"
@@ -162,7 +162,7 @@
             <p><a href="{{ path('homepage') }}">Начало</a></p>
             <p><a href="{{ path('orders_all') }}">Моите поръчки</a></p>
             <p><a href="{{ path('view_cart') }}">Количка</a></p>
-            <p><a href="#">Връзка с нас</a></p>
+            <p><a href="{{ path('contact_form') }}">Връзка с нас</a></p>
         </div>
         <div class="col-4 rounded border border-primary" style="padding: 30px;">
             <h4>Продукти</h4>

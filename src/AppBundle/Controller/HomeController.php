@@ -36,7 +36,6 @@ class HomeController extends Controller
      */
     public function getContactForm(Request $request)
     {
-
         $message = new Message();
         $form = $this->createForm(MessageType::class, $message);
         $form->handleRequest($request);

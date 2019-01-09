@@ -28,11 +28,6 @@ use Symfony\Component\Routing\Annotation\Route;
  */
 class AdminController extends Controller
 {
-    public function indexAction($name)
-    {
-        return $this->render('', array('name' => $name));
-    }
-
     /**
      * @Route("/category/add", name="add_category")
      * @param Request $request
@@ -174,7 +169,6 @@ class AdminController extends Controller
             }
 
             return $this->render("admin/edit-category.html.twig", ["form" => $form->createView()]);
-
         }
     }
 
@@ -182,7 +176,7 @@ class AdminController extends Controller
      * @return \Symfony\Component\HttpFoundation\Response
      * @Route("/user/all", name="users_all")
      */
-    public function getAllUsers()
+    public function getAllUsers(Request $request)
     {
         /**
          * @var User $user
@@ -192,7 +186,14 @@ class AdminController extends Controller
         if ($user->isAdmin()) {
             $users = $this->getDoctrine()->getRepository(User::class)->findAll();
 
-            return $this->render("admin/users-all.html.twig", ["users" => $users]);
+            $paginator  = $this->get('knp_paginator');
+            $pagination = $paginator->paginate(
+                $users, /* query NOT result */
+                $request->query->getInt('page', 1)/*page number*/,
+                3/*limit per page*/
+            );
+
+            return $this->render("admin/users-all.html.twig", ["users" => $pagination]);
         }
     }
 
@@ -307,7 +308,7 @@ class AdminController extends Controller
                     try {
                         $file->move($this->getParameter("product_directory"), $fileName);
                     } catch (FileException $ex) {
-
+                        echo $ex->getMessage();
                     }
 
                     $product->setImage($fileName);
@@ -324,6 +325,7 @@ class AdminController extends Controller
 
             return $this->render("product/create.html.twig", ["productForm" => $form->createView()]);
         } else {
+
             return $this->redirectToRoute("products_in_category");
         }
     }
@@ -380,6 +382,7 @@ class AdminController extends Controller
 
             return $this->render("product/edit.html.twig", ["productForm" => $form->createView(), "product" => $product]);
         } else {
+
             return $this->render('product/product.html.twig', ["product" => $product]);
         }
     }
@@ -417,7 +420,6 @@ class AdminController extends Controller
      */
     public function allUserOrders(int $id)
     {
-
         $currentUser = $this->getUser();
 
         if ($currentUser->isAdmin()) {
@@ -428,7 +430,6 @@ class AdminController extends Controller
 
             return $this->render("order/all.html.twig", ["orders" => $orders]);
         }
-
     }
 
     /**
@@ -437,11 +438,10 @@ class AdminController extends Controller
      */
     public function showAllCategories()
     {
-
         $currentUser = $this->getUser();
 
         if ($currentUser->isAdmin()) {
-            $categories = $this->getDoctrine()->getRepository(Category::class)->findBy([], ["id"=>"ASC"]);
+            $categories = $this->getDoctrine()->getRepository(Category::class)->findBy([], ["id" => "ASC"]);
 
             return $this->render("admin/show-categories.html.twig", ["categories" => $categories]);
         }
@@ -452,9 +452,8 @@ class AdminController extends Controller
      * @return \Symfony\Component\HttpFoundation\Response
      * @Route("/category/{id}/products", name="products_in_category")
      */
-    public function showAllProductsInCategory(int $id)
+    public function showAllProductsInCategory(Request $request, int $id)
     {
-
         $currentUser = $this->getUser();
 
         if ($currentUser->isAdmin()) {
@@ -462,7 +461,14 @@ class AdminController extends Controller
             $category = $this->getDoctrine()->getRepository(Category::class)->find($id);
             $products = $this->getDoctrine()->getRepository(Product::class)->findBy(["category" => $category]);
 
-            return $this->render("admin/view-products-in-category.html.twig", ["products" => $products, "category" => $category]);
+            $paginator  = $this->get('knp_paginator');
+            $pagination = $paginator->paginate(
+                $products, /* query NOT result */
+                $request->query->getInt('page', 1)/*page number*/,
+                6/*limit per page*/
+            );
+
+            return $this->render("admin/view-products-in-category.html.twig", ["products" => $pagination, "category" => $category]);
 
         }
     }
@@ -471,15 +477,23 @@ class AdminController extends Controller
      * @return \Symfony\Component\HttpFoundation\Response
      * @Route("/message/all", name="all_messages")
      */
-    public function getAllMessages()
+    public function getAllMessages(Request $request)
     {
         $currentUser = $this->getUser();
 
         if ($currentUser->isAdmin()) {
 
-            $messages = $this->getDoctrine()->getRepository(Message::class)->findBy([],["dateAdded"=>"DESC"]);
+            $messages = $this->getDoctrine()->getRepository(Message::class)->findBy([], ["dateAdded" => "DESC"]);
 
-            return $this->render("admin/view-all-messages.html.twig", ["messages" => $messages]);
+            $paginator  = $this->get('knp_paginator');
+            $pagination = $paginator->paginate(
+                $messages, /* query NOT result */
+                $request->query->getInt('page', 1)/*page number*/,
+                3/*limit per page*/
+            );
+
+
+            return $this->render("admin/view-all-messages.html.twig", ["messages" => $pagination]);
 
         }
     }
@@ -489,7 +503,8 @@ class AdminController extends Controller
      * @return \Symfony\Component\HttpFoundation\Response
      * @Route("/message/{id}", name="view_one_message")
      */
-    public function getMessage(int $id){
+    public function getMessage(int $id)
+    {
         $currentUser = $this->getUser();
 
         if ($currentUser->isAdmin()) {
@@ -502,7 +517,7 @@ class AdminController extends Controller
             $em->persist($message);
             $em->flush();
 
-            return $this->render("admin/view-message.html.twig", ["message"=>$message]);
+            return $this->render("admin/view-message.html.twig", ["message" => $message]);
         }
     }
 
@@ -511,7 +526,8 @@ class AdminController extends Controller
      * @return \Symfony\Component\HttpFoundation\RedirectResponse
      * @Route("/message/delete/{id}", name="delete_message")
      */
-    public function deleteMessage(int $id){
+    public function deleteMessage(int $id)
+    {
         $currentUser = $this->getUser();
 
         if ($currentUser->isAdmin()) {

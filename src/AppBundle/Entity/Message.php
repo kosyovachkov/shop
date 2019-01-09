@@ -39,7 +39,7 @@ class Message
      *
      * @ORM\Column(name="subject", type="string", length=255)
      *
-     * @Assert\NotBlank()
+     * @Assert\NotBlank(message="Полето не може да бъде празно.")
      */
     private $subject;
 
@@ -48,7 +48,7 @@ class Message
      *
      * @ORM\Column(name="phone", type="string", length=255)
      *
-     * @Assert\NotBlank()
+     * @Assert\NotBlank(message="Полето не може да бъде празно.")
      * @Assert\Regex(
      *     pattern="/^[\d]{10}$/",
      *     message="Номерът трябва да се състои от 10 цифри."
@@ -61,7 +61,7 @@ class Message
      *
      * @ORM\Column(name="content", type="text")
      *
-     * @Assert\NotBlank()
+     * @Assert\NotBlank(message="Полето не може да бъде празно.")
      */
     private $content;
 

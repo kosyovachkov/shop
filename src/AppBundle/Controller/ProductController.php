@@ -22,8 +22,6 @@ use Symfony\Component\Routing\Annotation\Route;
  */
 class ProductController extends Controller
 {
-
-
     /**
      * @Route("/{id}", name="view_product")
      * @param $id
@@ -52,7 +50,6 @@ class ProductController extends Controller
             $request->query->getInt('page', 1)/*page number*/,
             15/*limit per page*/
         );
-
 
         return $this->render('product/all.html.twig', ["allProducts" => $pagination]);
     }
@@ -92,6 +89,5 @@ class ProductController extends Controller
 
         return $this->render("product/featuredProducts.html.twig", ["featuredProducts"=>$pagination]);
     }
-
 
 }

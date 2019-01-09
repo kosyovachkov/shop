@@ -3,6 +3,7 @@
 namespace AppBundle\Controller;
 
 use AppBundle\Entity\UserOrder;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -10,14 +11,10 @@ use Symfony\Component\Routing\Annotation\Route;
  * Class UserOrderController
  * @package AppBundle\Controller
  * @Route("/order")
+ * @Security("is_granted('IS_AUTHENTICATED_FULLY')")
  */
 class UserOrderController extends Controller
 {
-    public function indexAction($name)
-    {
-        return $this->render('', array('name' => $name));
-    }
-
     /**
      * @return \Symfony\Component\HttpFoundation\Response
      * @Route("/all", name="orders_all")

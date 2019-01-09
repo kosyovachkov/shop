@@ -21,11 +21,6 @@ use Symfony\Component\Routing\Annotation\Route;
  */
 class CartController extends Controller
 {
-    public function indexAction($name)
-    {
-        return $this->render('', array('name' => $name));
-    }
-
     /**
      * @param Request $request
      * @param int $id
@@ -143,7 +138,6 @@ class CartController extends Controller
         }
 
         return $this->render("product/product.html.twig", ["product" => $product, "form" => $form->createView()]);
-
     }
 
 
@@ -233,7 +227,6 @@ class CartController extends Controller
      */
     public function removeProductsFromCart(int $id)
     {
-
         /**
          * @var User $user
          */

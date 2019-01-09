@@ -14,7 +14,7 @@
         {% for product in promoProducts %}
             <div class="col-md-4">
                 <div class="card mb-4 shadow-sm">
-                    <a href="{{ path('view_product', {"id":product.id}) }}">
+                    <a href="{{ path('add_product_to_cart', {"id":product.id}) }}">
                         <img class="card-img-top" src="{{ asset('uploads/images/' ~ product.image) }}" width="229"
                              height="260"
                              alt="Card image cap">

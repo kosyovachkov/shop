@@ -15,11 +15,6 @@ use Symfony\Component\Routing\Annotation\Route;
  */
 class CategoryController extends Controller
 {
-    public function indexAction($name)
-    {
-        return $this->render('', array('name' => $name));
-    }
-
     /**
      * @param Request $request
      * @param int $id
@@ -40,4 +35,5 @@ class CategoryController extends Controller
 
         return $this->render('category/all-products-from-category.html.twig', ["pagination"=>$pagination, "category"=>$category]);
     }
+
 }

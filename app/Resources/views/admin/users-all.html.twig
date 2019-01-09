@@ -10,7 +10,10 @@
             <th>Име</th>
             <th>Фамилия</th>
             <th>Email</th>
-            <th><div align="right">Действия</div></th>
+            <th>Администратор</th>
+            <th>
+                <div align="right">Действия</div>
+            </th>
         </tr>
         <tbody>
         {% for user in users %}
@@ -19,6 +22,11 @@
                 <td>{{ user.firstName }}</td>
                 <td>{{ user.lastName }}</td>
                 <td>{{ user.email }}</td>
+                {% if user.isAdmin() %}
+                    <td>ДА</td>
+                {% else %}
+                    <td>НЕ</td>
+                {% endif %}
                 <td align="right">
                     <a href="{{ path('view-user', {"id":user.id}) }}">
                         <button type="button" class="btn btn-info btn-sm">Разгледай профил</button>
@@ -30,5 +38,12 @@
         {% endfor %}
         </tbody>
     </table>
+
+    {# display navigation #}
+
+    <div class="navigation text-center">
+        {{ knp_pagination_render(users) }}
+    </div>
+
 {% endblock %}
 

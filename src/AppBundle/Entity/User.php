@@ -42,7 +42,7 @@ class User implements UserInterface
      *
      * @ORM\Column(name="firstName", type="string", length=255)
      *
-     * @Assert\NotBlank()
+     * @Assert\NotBlank(message="Полето не може да бъде празно.")
      */
     private $firstName;
 
@@ -51,7 +51,7 @@ class User implements UserInterface
      *
      * @ORM\Column(name="lastName", type="string", length=255)
      *
-     * @Assert\NotBlank()
+     * @Assert\NotBlank(message="Полето не може да бъде празно.")
      */
     private $lastName;
 
@@ -60,7 +60,7 @@ class User implements UserInterface
      *
      * @ORM\Column(name="password", type="string", length=255)
      *
-     * @Assert\NotBlank(message="Паролата е задължителна.", groups={"registration"})
+     * @Assert\NotBlank(message="Паролата е задължителна.")
      * @Assert\Length(
      *     min="6",
      *     max="12",
@@ -81,7 +81,7 @@ class User implements UserInterface
      *
      * @ORM\Column(name="address", type="string", length=255)
      *
-     * @Assert\NotBlank()
+     * @Assert\NotBlank(message="Полето не може да бъде празно.")
      */
     private $address;
 
@@ -90,7 +90,7 @@ class User implements UserInterface
      *
      * @ORM\Column(name="phone", type="string", length=255)
      *
-     * @Assert\NotBlank()
+     * @Assert\NotBlank(message="Полето не може да бъде празно.")
      * @Assert\Regex(
      *     pattern="/^[\d]{10}$/",
      *     message="Номерът трябва да се състои от 10 цифри."
