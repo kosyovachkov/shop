@@ -23,16 +23,16 @@
             </div>
             <br>
             {% if product.promoPrice %}
-                <h3> <span style="text-decoration: line-through">
+                <h3> <span style="text-decoration: line-through; color: deepskyblue">
             Цена: {{ product.price }} лв.</span>
                     <h3> <span style="font-weight:bold; color: red">
             Цена: {{ product.promoPrice }} лв.</span>
                     <span class="small">Налични: {{ product.quantity }} броя.</span>
                 </h3>
             {% else %}
-                <h3> <span class="badge badge-secondary">
+                <h3> <span style="color: deepskyblue">
             Цена: {{ product.price }} лв.</span>
-                    <span class="small">Налични: {{ product.quantity }} броя.</span>
+                    <span class="small">( Налични: {{ product.quantity }} броя. )</span>
                 </h3>
             {% endif %}
 
@@ -42,26 +42,11 @@
                 </p>
             </div>
         </div>
+
+
         {% if app.user %}
         <div class="col-4">
-            {#
-                        <hr style="border: 1px solid darkolivegreen">
 
-                        {{ form_start(form) }}
-
-                    <div class="form-group row">
-                        <div class="col-sm-2 col-form-label">
-                            {{ form_label(form.name) }}
-                        </div>
-                        <div class="col-sm-4">
-                            {{ form_widget(form.name) }}
-                        </div>
-                    </div>
-                    <div class="form-group row">
-                        <button class="btn btn-info">Добави</button>
-                    </div>
-                    {{ form_end(form) }}
-            #}
             <div><span style="margin-right: 10px;">
                     {{ form_start(form) }}
                     {{ form_label(form.quantity) }}
@@ -125,9 +110,11 @@
 
 {% endblock %}
 
+{#{% if app.user %}
+
 {% form_theme form _self %}
 
-{# form_errors.html.twig #}
+#}{# form_errors.html.twig #}{#
 {% block form_errors %}
     {% spaceless %}
         {% if errors|length > 0 %}
@@ -140,3 +127,27 @@
         {% endif %}
     {% endspaceless %}
 {% endblock form_errors %}
+
+{% endif %}#}
+
+ {% block logos %}
+
+     <hr class="container" style="border: 1px solid deepskyblue;">
+
+     <div id="carouselExampleControls" class="carousel slide" data-ride="carousel" data-interval="2500">
+         <div class="carousel-inner">
+             <div class="carousel-item active">
+                 <img class="d-block w-100"
+                      src="{{ asset('images/logos/logoshow1.png') }}"
+
+                      alt="First slide">
+             </div>
+             <div class="carousel-item">
+                 <img class="d-block w-100"
+                      src="{{ asset('images/logos/logoshow2.png') }}"
+                      alt="Second slide">
+             </div>
+         </div>
+     </div>
+
+ {% endblock %}

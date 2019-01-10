@@ -45,7 +45,7 @@
                             <span class="dropdown-menu" aria-labelledby="dropdownMenuLink">
                                 {% for category in product_categories.getAllCategories() %}
                                     <a class="dropdown-item"
-                                       href="{{ path('category', {"id":category.id}) }}">{{ category.name }}
+                                       href="{{ path('category', {"id":category.id}) }}">{{ category.name }} ({{ category.getProducts().count }})
                                     </a>
                                 {% endfor %}
                             </span>
@@ -151,6 +151,11 @@
         {% endblock %}
     {% endblock %}
 </div>
+
+<div class="container">
+    {% block logos %} {% endblock %}
+</div>
+
 <hr class="container" style="border: 1px solid deepskyblue; margin-bottom: 50px;margin-top: 50px;">
 {% block footer %}
     <footer>

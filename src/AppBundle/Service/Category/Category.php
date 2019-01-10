@@ -27,4 +27,5 @@ class Category implements CategoryInterface
         $categories = $this->categoryRepository->findBy([], ["id"=>"ASC"]);
         return $categories;
     }
+
 }

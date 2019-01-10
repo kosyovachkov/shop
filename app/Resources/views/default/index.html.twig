@@ -1,50 +1,41 @@
 {% extends 'base.html.twig' %}
 
-                        {% block jumboo %}
+                       {% block jumboo %}
 
-                            {% if app.user is null %}
+                           {% if app.user is null %}
 
-                                <hr class="container" style="border: 1px solid deepskyblue;">
+                               <hr class="container" style="border: 1px solid deepskyblue;">
 
-                                <div id="carouselExampleControls" class="carousel slide" data-ride="carousel">
-                                    <div class="carousel-inner">
-                                        <div class="carousel-item active">
-                                            <img class="d-block w-100"
-                                                 src="{{ asset('images/carosel/spearfishing4.jpg') }}"
+                               <div id="carouselExampleControls" class="carousel slide carousel-fade"
+                                    data-ride="carousel">
+                                   <div class="carousel-inner">
+                                       <div class="carousel-item active">
+                                           <img class="d-block w-100"
+                                                src="{{ asset('images/carosel/spearfishing4.jpg') }}"
 
-                                                 alt="First slide">
-                                        </div>
-                                        <div class="carousel-item">
-                                            <img class="d-block w-100"
-                                                 src="{{ asset('images/carosel/spearfishing2.jpg') }}"
-                                                 alt="Second slide">
-                                        </div>
-                                        <div class="carousel-item">
-                                            <img class="d-block w-100"
-                                                 src="{{ asset('images/carosel/spearfishing3.jpg') }}"
-                                                 alt="Third slide">
-                                        </div>
-                                        <div class="carousel-item">
-                                            <img class="d-block w-100"
-                                                 src="{{ asset('images/carosel/spearfishing1.jpg') }}"
-                                                 alt="Forth slide">
+                                                alt="First slide">
+                                       </div>
+                                       <div class="carousel-item">
+                                           <img class="d-block w-100"
+                                                src="{{ asset('images/carosel/spearfishing2.jpg') }}"
+                                                alt="Second slide">
+                                       </div>
+                                       <div class="carousel-item">
+                                           <img class="d-block w-100"
+                                                src="{{ asset('images/carosel/spearfishing3.jpg') }}"
+                                                alt="Third slide">
+                                       </div>
+                                       <div class="carousel-item">
+                                           <img class="d-block w-100"
+                                                src="{{ asset('images/carosel/spearfishing1.jpg') }}"
+                                                alt="Forth slide">
 
-                                        </div>
-                                    </div>
-                                    <a class="carousel-control-prev" href="#carouselExampleControls" role="button"
-                                       data-slide="prev">
-                                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                                        <span class="sr-only"><<</span>
-                                    </a>
-                                    <a class="carousel-control-next" href="#carouselExampleControls" role="button"
-                                       data-slide="next">
-                                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                                        <span class="sr-only">>></span>
-                                    </a>
-                                </div>
-                            {% endif %}
+                                       </div>
+                                   </div>
+                               </div>
+                           {% endif %}
 
-                        {% endblock %}
+                       {% endblock %}
 
 {% block body %}
     <hr>
@@ -56,48 +47,65 @@
         </div>
     {% endfor %}
 
+    {% for msg in app.session.flashBag.get("admInfo") %}
+        <div id="infomsg" class="alert alert-danger">
+            <a href="#" class="close" data-dismiss="alert" aria-label="close">x</a>
+            {{ msg }}
+        </div>
+    {% endfor %}
+
     <div class="row">
         {% for product in promo %}
             <div class="col-md-4">
                 <div class="card mb-4 shadow-sm">
+
+                    {% if app.user %}
                     <a href="{{ path('add_product_to_cart', {"id":product.id}) }}">
-                        <img class="card-img-top" src="{{ asset('uploads/images/' ~ product.image) }}" width="229"
-                             height="260"
-                             alt="Card image cap">
-                    </a>
-                    <div class="card-body">
-                        <h5 class="card-title">{{ product.name }} <span class="badge badge-success">Ново!</span></h5>
-                        {% if product.promoPrice %}
-                            <h5 class="card-title" style="text-decoration: line-through">{{ product.price }} лв.</h5>
-                            <h5 class="card-title" style="color: red; font-weight: bold">{{ product.promoPrice }}
-                                лв.</h5>
                         {% else %}
-                            <h5 class="card-title" style="color: red; font-weight: bold">{{ product.price }} лв.</h5>
-
-                        {% endif %}
-                        <p class="card-text">{{ product.introText }}...<br>>> <a
-                                    href="{{ path('view_product', {"id":product.id}) }}">Виж цялото описание</a> <<</p>
-                    </div>
-                    <div class="card-footer">
-                        <div class="btn-group">
-                            {% if app.user %}
-                                <a href="{{ path('add_product_to_cart', {"id":product.id}) }}">
-                                    <button type="button" class="btn btn-md btn-outline-info">Разгледай</button>
-                                </a>
-                            {% else %}
-                                <a href="{{ path('view_product', {"id":product.id}) }}">
-                                    <button type="button" class="btn btn-md btn-outline-info">Разгледай</button>
-                                </a>
-
+                        <a href="{{ path('view_product', {"id":product.id}) }}">
                             {% endif %}
 
-                            <a href="{{ path('add_to_cart', {"id":product.id}) }}">
-                                <button type="button" class="btn btn-md btn-outline-danger">Добави в количката
-                                </button>
-                            </a>
+                            <img class="card-img-top" src="{{ asset('uploads/images/' ~ product.image) }}" width="229"
+                                 height="260"
+                                 alt="Card image cap">
+                        </a>
+                        <div class="card-body">
+                            <h5 class="card-title">{{ product.name }}</h5>
+                            {% if product.promoPrice %}
+                                <h5 class="card-title"
+                                    style="text-decoration: line-through; color: deepskyblue">{{ product.price }}
+                                    лв.</h5>
+                                <h5 class="card-title" style="color: red; font-weight: bold">{{ product.promoPrice }}
+                                    лв.</h5>
+                            {% else %}
+                                <h5 class="card-title" style="color: red; font-weight: bold">{{ product.price }}
+                                    лв.</h5>
 
+                            {% endif %}
+                            <p class="card-text">{{ product.introText }}...<br>>> <a
+                                        href="{{ path('view_product', {"id":product.id}) }}">Виж цялото описание</a> <<
+                            </p>
                         </div>
-                    </div>
+                        <div class="card-footer">
+                            <div class="btn-group">
+                                {% if app.user %}
+                                    <a href="{{ path('add_product_to_cart', {"id":product.id}) }}">
+                                        <button type="button" class="btn btn-md btn-outline-info">Разгледай</button>
+                                    </a>
+                                {% else %}
+                                    <a href="{{ path('view_product', {"id":product.id}) }}">
+                                        <button type="button" class="btn btn-md btn-outline-info">Разгледай</button>
+                                    </a>
+
+                                {% endif %}
+
+                                <a href="{{ path('add_to_cart', {"id":product.id}) }}">
+                                    <button type="button" class="btn btn-md btn-outline-danger">Добави в количката
+                                    </button>
+                                </a>
+
+                            </div>
+                        </div>
                 </div>
             </div>
         {% endfor %}
@@ -155,7 +163,7 @@
         {% for product in products %}
             <div class="col-md-4">
                 <div class="card mb-4 shadow-sm">
-                    <a href="{{ path('add_product_to_cart', {"id":product.id}) }}">
+                    <a href="{{ path('view_product', {"id":product.id}) }}">
                         <img class="card-img-top" src="{{ asset('uploads/images/' ~ product.image) }}" width="229"
                              height="260"
                              alt="Card image cap">
@@ -163,7 +171,8 @@
                     <div class="card-body">
                         <h5 class="card-title">{{ product.name }} <span class="badge badge-success">Ново!</span></h5>
                         {% if product.promoPrice %}
-                            <h5 class="card-title" style="text-decoration: line-through">{{ product.price }} лв.</h5>
+                            <h5 class="card-title"
+                                style="text-decoration: line-through; color: deepskyblue">{{ product.price }} лв.</h5>
                             <h5 class="card-title" style="color: red; font-weight: bold">{{ product.promoPrice }}
                                 лв.</h5>
                         {% else %}
@@ -199,3 +208,25 @@
     </div>
     <hr style="margin-bottom: 30px">
 {% endblock %}
+
+ {% block logos %}
+
+     <hr class="container" style="border: 1px solid deepskyblue;">
+
+     <div id="carouselExampleControls" class="carousel slide" data-ride="carousel" data-interval="2500">
+         <div class="carousel-inner">
+             <div class="carousel-item active">
+                 <img class="d-block w-100"
+                      src="{{ asset('images/logos/logoshow1.png') }}"
+
+                      alt="First slide">
+             </div>
+             <div class="carousel-item">
+                 <img class="d-block w-100"
+                      src="{{ asset('images/logos/logoshow2.png') }}"
+                      alt="Second slide">
+             </div>
+         </div>
+     </div>
+
+ {% endblock %}

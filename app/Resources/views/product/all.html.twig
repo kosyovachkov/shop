@@ -6,20 +6,36 @@
         {% for product in allProducts %}
             <div class="col-md-4">
                 <div class="card mb-4 shadow-sm">
+                    {% if app.user %}
                     <a href="{{ path('add_product_to_cart', {"id":product.id}) }}">
+                        {% else %}
+                        <a href="{{ path('view_product', {"id":product.id}) }}">
+                            {% endif %}
                         <img class="card-img-top" src="{{ asset('uploads/images/' ~ product.image) }}" width="229" height="260"
                              alt="Card image cap">
                     </a>
                     <div class="card-body">
-                        <h5 class="card-title">{{ product.name }} <span class="badge badge-success">Ново!</span></h5>
+                        <h5 class="card-title">{{ product.name }}</h5>
                         <h5 class="card-title" style="color: red; font-weight: bold">{{ product.price }} лв.</h5>
                         <p class="card-text">{{ product.introText }}...<br>>> <a href="{{ path('view_product', {"id":product.id}) }}">Виж цялото описание</a> <<</p>
                     </div>
-                    <div class="card-footer">
-                        <div class="btn-group">
-                            <button type="button" class="btn btn-md btn-outline-info">Разгледай</button>
-                            <button type="button" class="btn btn-md btn-outline-danger">Добави в количката</button>
-                        </div>
+                    <div class="btn-group">
+                        {% if app.user %}
+                            <a href="{{ path('add_product_to_cart', {"id":product.id}) }}">
+                                <button type="button" class="btn btn-md btn-outline-info">Разгледай</button>
+                            </a>
+                        {% else %}
+                            <a href="{{ path('view_product', {"id":product.id}) }}">
+                                <button type="button" class="btn btn-md btn-outline-info">Разгледай</button>
+                            </a>
+
+                        {% endif %}
+
+                        <a href="{{ path('add_to_cart', {"id":product.id}) }}">
+                            <button type="button" class="btn btn-md btn-outline-danger">Добави в количката
+                            </button>
+                        </a>
+
                     </div>
                 </div>
             </div>
@@ -32,4 +48,26 @@
         {{ knp_pagination_render(allProducts) }}
     </div>
 {% endblock %}
+
+ {% block logos %}
+
+     <hr class="container" style="border: 1px solid deepskyblue;">
+
+     <div id="carouselExampleControls" class="carousel slide" data-ride="carousel" data-interval="2500">
+         <div class="carousel-inner">
+             <div class="carousel-item active">
+                 <img class="d-block w-100"
+                      src="{{ asset('images/logos/logoshow1.png') }}"
+
+                      alt="First slide">
+             </div>
+             <div class="carousel-item">
+                 <img class="d-block w-100"
+                      src="{{ asset('images/logos/logoshow2.png') }}"
+                      alt="Second slide">
+             </div>
+         </div>
+     </div>
+
+ {% endblock %}
 

@@ -63,6 +63,10 @@ class AdminController extends Controller
 
             return $this->render("admin/add-category.html.twig", ["form" => $form->createView()]);
         }
+
+        $this->addFlash("admInfo", "Нямате необходимите права.");
+
+        return $this->redirectToRoute('homepage');
     }
 
     /**
@@ -93,6 +97,10 @@ class AdminController extends Controller
 
             return $this->redirectToRoute("categories_all");
         }
+
+        $this->addFlash("admInfo", "Нямате необходимите права.");
+
+        return $this->redirectToRoute('homepage');
     }
 
     /**
@@ -132,6 +140,10 @@ class AdminController extends Controller
 
             return $this->render('admin/all-categories.html.twig', ["categories" => $categories, "form" => $form->createView()]);
         }
+
+        $this->addFlash("admInfo", "Нямате необходимите права.");
+
+        return $this->redirectToRoute('homepage');
     }
 
     /**
@@ -170,6 +182,10 @@ class AdminController extends Controller
 
             return $this->render("admin/edit-category.html.twig", ["form" => $form->createView()]);
         }
+
+        $this->addFlash("admInfo", "Нямате необходимите права.");
+
+        return $this->redirectToRoute('homepage');
     }
 
     /**
@@ -195,6 +211,10 @@ class AdminController extends Controller
 
             return $this->render("admin/users-all.html.twig", ["users" => $pagination]);
         }
+
+        $this->addFlash("admInfo", "Нямате необходимите права.");
+
+        return $this->redirectToRoute('homepage');
     }
 
     /**
@@ -222,8 +242,14 @@ class AdminController extends Controller
             $em->remove($user);
             $em->flush();
 
+            $this->addFlash("deleteUserInfo", "Потребителят бе успешно изтрит.");
+
             return $this->redirectToRoute("users_all");
         }
+
+        $this->addFlash("admInfo", "Нямате необходимите права.");
+
+        return $this->redirectToRoute('homepage');
     }
 
 
@@ -244,6 +270,10 @@ class AdminController extends Controller
 
             return $this->render("admin/view-user.html.twig", ["user" => $user]);
         }
+
+        $this->addFlash("admInfo", "Нямате необходимите права.");
+
+        return $this->redirectToRoute('homepage');
     }
 
     /**
@@ -272,6 +302,10 @@ class AdminController extends Controller
 
             return $this->redirectToRoute("users_all");
         }
+
+        $this->addFlash("admInfo", "Нямате необходимите права.");
+
+        return $this->redirectToRoute('homepage');
     }
 
     /**
@@ -319,6 +353,8 @@ class AdminController extends Controller
                 $em = $this->getDoctrine()->getManager();
                 $em->persist($product);
                 $em->flush();
+
+                $this->addFlash("createProductInfo", "Продуктът бе успешно добавен.");
 
                 return $this->redirectToRoute("products_in_category", ["id" => $catId]);
             }
@@ -377,6 +413,8 @@ class AdminController extends Controller
                 $em->persist($product);
                 $em->flush();
 
+                $this->addFlash("createProductInfo", "Продуктът бе успешно променен.");
+
                 return $this->redirectToRoute("products_in_category", ["id" => $catId]);
             }
 
@@ -385,6 +423,7 @@ class AdminController extends Controller
 
             return $this->render('product/product.html.twig', ["product" => $product]);
         }
+
     }
 
     /**
@@ -408,8 +447,14 @@ class AdminController extends Controller
             $em->remove($product);
             $em->flush();
 
+            $this->addFlash("deletеProductInfo", "Продуктът бе успешно изтрит.");
+
             return $this->redirectToRoute("products_in_category", ["id" => $catId]);
         }
+
+        $this->addFlash("admInfo", "Нямате необходимите права.");
+
+        return $this->redirectToRoute('homepage');
     }
 
     /**
@@ -430,6 +475,10 @@ class AdminController extends Controller
 
             return $this->render("order/all.html.twig", ["orders" => $orders]);
         }
+
+        $this->addFlash("admInfo", "Нямате необходимите права.");
+
+        return $this->redirectToRoute('homepage');
     }
 
     /**
@@ -445,6 +494,10 @@ class AdminController extends Controller
 
             return $this->render("admin/show-categories.html.twig", ["categories" => $categories]);
         }
+
+        $this->addFlash("admInfo", "Нямате необходимите права.");
+
+        return $this->redirectToRoute('homepage');
     }
 
     /**
@@ -471,6 +524,10 @@ class AdminController extends Controller
             return $this->render("admin/view-products-in-category.html.twig", ["products" => $pagination, "category" => $category]);
 
         }
+
+        $this->addFlash("admInfo", "Нямате необходимите права.");
+
+        return $this->redirectToRoute('homepage');
     }
 
     /**
@@ -496,6 +553,10 @@ class AdminController extends Controller
             return $this->render("admin/view-all-messages.html.twig", ["messages" => $pagination]);
 
         }
+
+        $this->addFlash("admInfo", "Нямате необходимите права.");
+
+        return $this->redirectToRoute('homepage');
     }
 
     /**
@@ -519,6 +580,10 @@ class AdminController extends Controller
 
             return $this->render("admin/view-message.html.twig", ["message" => $message]);
         }
+
+        $this->addFlash("admInfo", "Нямате необходимите права.");
+
+        return $this->redirectToRoute('homepage');
     }
 
     /**
@@ -542,5 +607,9 @@ class AdminController extends Controller
             return $this->redirectToRoute("all_messages");
 
         }
+
+        $this->addFlash("admInfo", "Нямате необходимите права.");
+
+        return $this->redirectToRoute('homepage');
     }
 }

@@ -4,6 +4,21 @@
     <hr>
     <h2>Продукти в {{ category.name }}</h2>
     <hr>
+
+    {% for msg in app.session.flashBag.get("deletеProductInfo") %}
+        <div id="infomsg" class="alert alert-danger">
+            <a href="#" class="close" data-dismiss="alert" aria-label="close">x</a>
+            {{ msg }}
+        </div>
+    {% endfor %}
+
+    {% for msg in app.session.flashBag.get("createProductInfo") %}
+        <div id="infomsg" class="alert alert-success">
+            <a href="#" class="close" data-dismiss="alert" aria-label="close">x</a>
+            {{ msg }}
+        </div>
+    {% endfor %}
+
     <table class="table table-dark">
         <tr>
             <td align="right">
