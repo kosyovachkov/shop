@@ -1,0 +1,7 @@
+First, run shop_db_FN.sql into you database server.
+The run application.
+
+Default admin user: 
+username - admin@abv.bg
+password - 55555
+

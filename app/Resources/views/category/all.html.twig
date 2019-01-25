@@ -1,0 +1,29 @@
+{% extends 'base.html.twig' %}
+
+{% block logos %}
+
+{% endblock %}
+
+    {% block body %}
+        <div class="container">
+            <hr>
+            <h3>Категории</h3>
+            <hr>
+            <div class="row">
+                {% for category in categories %}
+
+                    <div class="col-4">
+                        <a href="{{ path('category', {"id":category.id}) }}">
+                        <div align="center" style="margin: 20px">
+                            <div><img src="{{ asset('uploads/category/images/' ~ category.getImage()) }}" width="300px">
+                            </div>
+                            <div>{{ category.getName() }}</div>
+                        </div>
+                        </a>
+                    </div>
+                {% endfor %}
+            </div>
+
+        </div>
+    {% endblock %}
+

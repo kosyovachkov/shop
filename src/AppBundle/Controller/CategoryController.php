@@ -36,4 +36,14 @@ class CategoryController extends Controller
         return $this->render('category/all-products-from-category.html.twig', ["pagination"=>$pagination, "category"=>$category]);
     }
 
+    /**
+     * @return \Symfony\Component\HttpFoundation\Response
+     * @Route("/index/all", name="all_categories")
+     */
+    public function getAllCategories(){
+        $categories = $this->getDoctrine()->getRepository(Category::class)->findAll();
+
+        return $this->render("category/all.html.twig", ["categories"=>$categories]);
+    }
+
 }

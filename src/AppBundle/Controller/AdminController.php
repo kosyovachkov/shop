@@ -10,10 +10,12 @@ use AppBundle\Entity\Product;
 use AppBundle\Entity\Role;
 use AppBundle\Entity\User;
 use AppBundle\Entity\UserOrder;
+use AppBundle\Form\CategoryType;
 use AppBundle\Form\ProductType;
 use AppBundle\Form\UserType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
@@ -41,19 +43,35 @@ class AdminController extends Controller
         $user = $this->getUser();
 
         if ($user->isAdmin()) {
+
             $category = new Category();
 
-            $form = $this->createFormBuilder($category)
-                ->add("name", TextType::class, [
-                    "label" => "Име на категория",
-                    "attr" => [
-                        "class" => "form-control"
-                    ]])
-                ->getForm();
+            $image = "noCategoryImage.jpg";
 
+            $form = $this->createForm(CategoryType::class, $category);
             $form->handleRequest($request);
 
             if ($form->isSubmitted() && $form->isValid()) {
+
+                /**
+                 * @var UploadedFile $file
+                 */
+                $file = $category->getImage();
+
+                if ($file === "noCategoryImage") {
+                    $category->setImage($image);
+                } else {
+                    $fileName = md5(uniqid()) . "." . $file->guessExtension();
+
+                    try {
+                        $file->move($this->getParameter("category_directory"), $fileName);
+                    } catch (FileException $ex) {
+                        echo $ex->getMessage();
+                    }
+
+                    $category->setImage($fileName);
+                }
+
                 $em = $this->getDoctrine()->getManager();
                 $em->persist($category);
                 $em->flush();
@@ -119,18 +137,33 @@ class AdminController extends Controller
             $categories = $this->getDoctrine()->getRepository(Category::class)->findAll();
 
             $category = new Category();
+            $image = "noCategoryImage.jpg";
 
-            $form = $this->createFormBuilder($category)
-                ->add("name", TextType::class, [
-                    "label" => "Име на категория",
-                    "attr" => [
-                        "class" => "form-control"
-                    ]])
-                ->getForm();
-
+            $form = $this->createForm(CategoryType::class, $category);
             $form->handleRequest($request);
 
             if ($form->isSubmitted() && $form->isValid()) {
+
+                /**
+                 * @var UploadedFile $file
+                 */
+                $file = $category->getImage();
+
+
+                if ($file === "noCategoryImage") {
+                    $category->setImage($image);
+                } else {
+                    $fileName = md5(uniqid()) . "." . $file->guessExtension();
+
+                    try {
+                        $file->move($this->getParameter("category_directory"), $fileName);
+                    } catch (FileException $ex) {
+                        echo $ex->getMessage();
+                    }
+
+                    $category->setImage($fileName);
+                }
+
                 $em = $this->getDoctrine()->getManager();
                 $em->persist($category);
                 $em->flush();
@@ -162,17 +195,33 @@ class AdminController extends Controller
         if ($user->isAdmin()) {
             $category = $this->getDoctrine()->getRepository(Category::class)->find($id);
 
-            $form = $this->createFormBuilder($category)
-                ->add("name", TextType::class, [
-                    "label" => "Име на категория",
-                    "attr" => [
-                        "class" => "form-control"
-                    ]])
-                ->getForm();
-
+            $form = $this->createForm(CategoryType::class, $category);
             $form->handleRequest($request);
 
+            $image = $category->getImage();
+
             if ($form->isSubmitted() && $form->isValid()) {
+
+                /**
+                 * @var UploadedFile $file
+                 */
+                $file = $form->getData()->getImage();
+
+                if ($file === "noCategoryImage") {
+                    $category->setImage($image);
+                } else {
+
+                    $fileName = md5(uniqid()) . "." . $file->guessExtension();
+
+                    try {
+                        $file->move($this->getParameter("category_directory"), $fileName);
+                    } catch (FileException $ex) {
+                        echo $ex->getMessage();
+                    }
+
+                    $category->setImage($fileName);
+                }
+
                 $em = $this->getDoctrine()->getManager();
                 $em->persist($category);
                 $em->flush();
@@ -202,7 +251,7 @@ class AdminController extends Controller
         if ($user->isAdmin()) {
             $users = $this->getDoctrine()->getRepository(User::class)->findAll();
 
-            $paginator  = $this->get('knp_paginator');
+            $paginator = $this->get('knp_paginator');
             $pagination = $paginator->paginate(
                 $users, /* query NOT result */
                 $request->query->getInt('page', 1)/*page number*/,
@@ -329,10 +378,13 @@ class AdminController extends Controller
             $form->handleRequest($request);
 
             if ($form->isSubmitted() && $form->isValid()) {
+
                 /**
                  * @var UploadedFile $file
                  */
                 $file = $product->getImage();
+
+
 
                 if ($file === "noSelectedImage") {
                     $product->setImage($image);
@@ -514,7 +566,7 @@ class AdminController extends Controller
             $category = $this->getDoctrine()->getRepository(Category::class)->find($id);
             $products = $this->getDoctrine()->getRepository(Product::class)->findBy(["category" => $category]);
 
-            $paginator  = $this->get('knp_paginator');
+            $paginator = $this->get('knp_paginator');
             $pagination = $paginator->paginate(
                 $products, /* query NOT result */
                 $request->query->getInt('page', 1)/*page number*/,
@@ -542,7 +594,7 @@ class AdminController extends Controller
 
             $messages = $this->getDoctrine()->getRepository(Message::class)->findBy([], ["dateAdded" => "DESC"]);
 
-            $paginator  = $this->get('knp_paginator');
+            $paginator = $this->get('knp_paginator');
             $pagination = $paginator->paginate(
                 $messages, /* query NOT result */
                 $request->query->getInt('page', 1)/*page number*/,
